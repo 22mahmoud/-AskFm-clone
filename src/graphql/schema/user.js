@@ -18,6 +18,8 @@ export default `
         bio: String
         avatar: String
         loc: Location
+        followers: [User]
+        following: [User]
     }
     
     type Me {
@@ -29,6 +31,8 @@ export default `
         bio: String
         avatar: String
         loc: Location
+        followers: [User]
+        following: [User]
     }
 
     type RegisterResponse {
@@ -53,5 +57,6 @@ export default `
         register(username: String!, name: String!, email: String!, password: String!): RegisterResponse!
         addLocation(loc: LocationInput): Me!
         login(email: String!, password: String!): LoginResponse
+        Togglefollow(userID: ID!): User
     }
 `;

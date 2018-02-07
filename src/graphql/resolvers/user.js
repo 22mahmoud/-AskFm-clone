@@ -3,8 +3,14 @@ import User from '../../models/User';
 import { requireUser } from '../../services/auth';
 
 export default {
-  User: {},
-  Me: {},
+  User: {
+    followers: ({ followers }) => followers.map(f => User.findById(f)),
+    following: ({ following }) => following.map(f => User.findById(f)),
+  },
+  Me: {
+    followers: ({ followers }) => followers.map(f => User.findById(f)),
+    following: ({ following }) => following.map(f => User.findById(f)),
+  },
   Query: {
     getUser: async (_, { email }) => {
       try {
@@ -32,7 +38,6 @@ export default {
           user,
         };
       } catch (error) {
-        console.log(error);
         return {
           isOk: false,
           errors: FormatErrors(error),
@@ -92,6 +97,33 @@ export default {
           { new: true },
         );
         return updatedUser;
+      } catch (error) {
+        throw error;
+      }
+    },
+    Togglefollow: async (_, { userID }, { user }) => {
+      try {
+        const me = await requireUser(user);
+        const userToFollow = await User.findById(userID);
+        if (!userToFollow || !me) {
+          throw Error;
+        }
+
+        if (userToFollow.followers.indexOf(user._id) > -1) {
+          await userToFollow.update(
+            { $pull: { followers: user._id } },
+            { new: true },
+          );
+          await me.update({ $pull: { following: userID } }, { new: true });
+        } else {
+          await userToFollow.update(
+            { $push: { followers: user._id } },
+            { new: true },
+          );
+          await me.update({ $push: { following: userID } }, { new: true });
+        }
+
+        return await User.findById(userID);
       } catch (error) {
         throw error;
       }

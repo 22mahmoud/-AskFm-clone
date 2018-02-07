@@ -46,6 +46,8 @@ const UserSchema = new Schema({
   },
   bio: String,
   avatar: String,
+  followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 
 UserSchema.plugin(uniqueValidator, {
