@@ -1,6 +1,7 @@
 import FormatErrors from '../../FormatErrors';
 import User from '../../models/User';
 import { requireUser } from '../../services/auth';
+import LikeQuestion from '../../models/LikeQuestion';
 
 export default {
   User: {
@@ -33,6 +34,8 @@ export default {
     register: async (_, args) => {
       try {
         const user = await User.create(args);
+        await LikeQuestion.create({ userId: user._id });
+
         return {
           isOk: true,
           user,

@@ -1,6 +1,8 @@
 import FormatErrors from '../../FormatErrors';
 import User from '../../models/User';
 import Question from '../../models/Question';
+import LikeQuestion from '../../models/LikeQuestion';
+
 import { requireUser } from '../../services/auth';
 
 export default {
@@ -8,15 +10,34 @@ export default {
     theAsker: ({ theAsker }) => User.findById(theAsker),
     // theResponder: ({ theResponder }) => theResponder.map(r => User.findById(r)),
     theResponder: ({ theResponder }) => User.findById(theResponder),
-    likes: ({ likes }) => likes.map(l => User.findById(l)),
+    // likes: ({ likes }) => likes.map(l => User.findById(l)),
   },
 
   Query: {
     getQuestions: async (_, args, { user }) => {
       try {
         await requireUser(user);
-        const questions = await Question.find({});
-        return questions;
+        const p1 = Question.find({}).sort({ createdAt: -1 });
+        const p2 = LikeQuestion.findOne({ userId: user._id });
+        const [questions, likes] = await Promise.all([p1, p2]);
+        console.log('LIKES', likes);
+        const QuestionsToSend = questions.reduce((arr, question) => {
+          const qs = question.toJSON();
+          if (likes.questions.some(q => q.equals(question._id))) {
+            arr.push({
+              ...qs,
+              isLiked: true,
+            });
+          } else {
+            arr.push({
+              ...qs,
+              isLiked: false,
+            });
+          }
+          return arr;
+        }, []);
+
+        return QuestionsToSend;
       } catch (error) {
         throw error;
       }
@@ -73,17 +94,12 @@ export default {
     likeQuestionToggle: async (_, { questionID }, { user }) => {
       try {
         await requireUser(user);
+        const likes = await LikeQuestion.findOne({ userId: user._id });
 
-        const question = await Question.findById(questionID);
-        if (question.likes.indexOf(user._id) > -1) {
-          await question.update({ $pull: { likes: user._id } }, { new: true });
-        } else {
-          await question.update({ $push: { likes: user._id } }, { new: true });
-        }
+        const question = await likes.userLikedQuestion(questionID);
 
         return {
-          question: await Question.findById(question),
-          // question,
+          question,
         };
       } catch (error) {
         return {

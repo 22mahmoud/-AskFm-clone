@@ -10,7 +10,7 @@ export default `
     }
     
     type User {
-        id: ID!
+        _id: ID!
         name: String!
         email: String!
         username: String!
@@ -20,10 +20,11 @@ export default `
         loc: Location
         followers: [User]
         following: [User]
+        
     }
     
     type Me {
-        id: ID!
+        _id: ID!
         name: String!
         email: String!
         username: String!

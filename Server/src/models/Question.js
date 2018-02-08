@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import Question from '../graphql/resolvers/Question';
+// import Question from '../graphql/resolvers/Question';
 
 const QuestionSchema = new Schema(
   {
@@ -19,19 +19,28 @@ const QuestionSchema = new Schema(
       ref: 'User',
     },
 
-    likes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    ],
+    likesCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );
 
-QuestionSchema.methods = {
-  likesCount() {
-    return Question.aggregate({ $project: { count: { $size: '$likes' } } });
+QuestionSchema.statics = {
+  incLikesCount(questionId) {
+    return this.findByIdAndUpdate(
+      questionId,
+      { $inc: { likesCount: 1 } },
+      { new: true },
+    );
+  },
+  decLikesCount(questionId) {
+    return this.findByIdAndUpdate(
+      questionId,
+      { $inc: { likesCount: -1 } },
+      { new: true },
+    );
   },
 };
 
