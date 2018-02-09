@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset';
 import { ApolloProvider } from 'react-apollo';
+import { BrowserRouter } from 'react-router-dom';
 
 import 'antd/dist/antd.css';
 
@@ -15,7 +16,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root'),
 );
