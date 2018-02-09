@@ -20,7 +20,6 @@ export default {
         const p1 = Question.find({}).sort({ createdAt: -1 });
         const p2 = LikeQuestion.findOne({ userId: user._id });
         const [questions, likes] = await Promise.all([p1, p2]);
-        console.log('LIKES', likes);
         const QuestionsToSend = questions.reduce((arr, question) => {
           const qs = question.toJSON();
           if (likes.questions.some(q => q.equals(question._id))) {
