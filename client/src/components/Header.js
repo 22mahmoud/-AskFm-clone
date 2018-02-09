@@ -1,23 +1,28 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
+import Radium from 'radium';
+
 import { Layout } from 'antd';
 
-const { Header: HeaderWrapper } = Layout;
+const styles = {
+  header: {
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center',
+    background: '#fff',
+    ':hover:': {
+      opacity: 0.2,
+    },
+  },
+};
 
+const { Header: HeaderWrapper } = Layout;
 const Header = () => (
-  <HeaderWrapper
-    style={{
-      color: '#ee4c22',
-      textAlign: 'center',
-      background: '#fff',
-      display: 'flex',
-      justifyContent: 'center',
-    }}
-  >
+  <HeaderWrapper style={styles.header}>
     <Link to="/" style={{ textDecoration: 'none' }}>
-      <h1 style={{ color: '#C6304A' }}> AskMe </h1>;
+      <h1 style={{ color: '#000' }}> TheQ. </h1>
     </Link>
   </HeaderWrapper>
 );
 
-export default withRouter(Header);
+export default withRouter(Radium(Header));

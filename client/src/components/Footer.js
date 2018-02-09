@@ -1,45 +1,44 @@
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Layout } from 'antd';
+import Radium from 'radium';
 
 const { Footer: FooterWrapper } = Layout;
 
+const styles = {
+  footer: {
+    textAlign: 'center',
+    background: '#fff',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+};
+
+const footerLinks = [
+  {
+    text: 'About TheQ',
+    link: 'https://github.com/22mahmoud/AskFm-clone',
+  },
+  {
+    text: '@22mahmoud The Author',
+    link: 'https://github.com/22mahmoud',
+  },
+  {
+    text: 'Contact Me',
+    link: 'https://twitter.com/mahmoudzashraf',
+  },
+];
+
 const Footer = () => (
-  <FooterWrapper
-    style={{
-      textAlign: 'center',
-      background: '#fff',
-      flexDirection: 'row',
-      display: 'flex',
-      justifyContent: 'space-around',
-      flexWrap: 'wrap',
-    }}
-  >
-    <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>
-      About ASKfm
-    </Link>
-    <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>
-      Safety center
-    </Link>
-    <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>
-      Help
-    </Link>
-    <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>
-      Community Guidelines
-    </Link>
-    <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>
-      Terms of use
-    </Link>
-    <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>
-      Privacy policy
-    </Link>
-    <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>
-      Cookies policy
-    </Link>
-    <Link to="/" style={{ textDecoration: 'none', color: '#000' }}>
-      Advertising
-    </Link>
+  <FooterWrapper style={styles.footer}>
+    {footerLinks.map(({ text, link }) => (
+      <a key={text} href={link} style={{ textDecoration: 'none', color: '#000', marginLeft: 15 }}>
+        {text}
+      </a>
+    ))}
   </FooterWrapper>
 );
 
-export default withRouter(Footer);
+export default withRouter(Radium(Footer));

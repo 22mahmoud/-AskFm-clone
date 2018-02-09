@@ -1,7 +1,6 @@
 import React from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 // import {} from "react-router-dom";
-import './style.css';
 
 const FormItem = Form.Item;
 
