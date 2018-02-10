@@ -8,7 +8,6 @@ import Login from './Login';
 import SignUp from './SignUp';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import bg from '../assets/images/bg.png';
 
 const styles = {
   content: {
@@ -16,7 +15,7 @@ const styles = {
     justifyContent: 'center',
 
     color: '#fff',
-    background: `url(${bg}) no-repeat bottom, #2b3237`,
+    background: ' #784589',
     backgroundSize: '1400px',
   },
 };

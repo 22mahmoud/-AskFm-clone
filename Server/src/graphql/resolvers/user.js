@@ -34,13 +34,16 @@ export default {
     register: async (_, args) => {
       try {
         const user = await User.create(args);
-        await LikeQuestion.create({ userId: user._id });
+        if (user) {
+          await LikeQuestion.create({ userId: user._id });
+        }
 
         return {
           isOk: true,
           user,
         };
       } catch (error) {
+        console.log(error);
         return {
           isOk: false,
           errors: FormatErrors(error),
@@ -113,16 +116,10 @@ export default {
         }
 
         if (userToFollow.followers.indexOf(user._id) > -1) {
-          await userToFollow.update(
-            { $pull: { followers: user._id } },
-            { new: true },
-          );
+          await userToFollow.update({ $pull: { followers: user._id } }, { new: true });
           await me.update({ $pull: { following: userID } }, { new: true });
         } else {
-          await userToFollow.update(
-            { $push: { followers: user._id } },
-            { new: true },
-          );
+          await userToFollow.update({ $push: { followers: user._id } }, { new: true });
           await me.update({ $push: { following: userID } }, { new: true });
         }
 

@@ -7,10 +7,6 @@ import constants from '../config/constants';
 
 const UserSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: [true, 'Please Enter your name'],
-    },
     username: {
       dropDups: true,
       type: String,
@@ -53,14 +49,12 @@ const UserSchema = new Schema(
   { timestamps: true },
 );
 
-UserSchema.plugin(uniqueValidator, {
-  message: 'Error, expected {PATH} to be unique.',
-});
+UserSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' });
 
 UserSchema.index({ loc: '2dsphere' });
 
 // eslint-disable-next-line
-UserSchema.pre("save", function() {
+UserSchema.pre('save', function() {
   if (this.isModified('password')) {
     this.password = this._hashPassword(this.password);
   }

@@ -11,7 +11,6 @@ export default `
     
     type User {
         _id: ID!
-        name: String!
         email: String!
         username: String!
         password: String!
@@ -25,7 +24,6 @@ export default `
     
     type Me {
         _id: ID!
-        name: String!
         email: String!
         username: String!
         password: String!
@@ -55,7 +53,7 @@ export default `
     } 
 
     type Mutation {
-        register(username: String!, name: String!, email: String!, password: String!): RegisterResponse!
+        register(username: String!, email: String!, password: String!): RegisterResponse!
         addLocation(loc: LocationInput): Me!
         login(email: String!, password: String!): LoginResponse
         Togglefollow(userID: ID!): User
