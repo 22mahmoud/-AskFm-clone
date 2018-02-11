@@ -49,7 +49,7 @@ const UserSchema = new Schema(
   { timestamps: true },
 );
 
-UserSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' });
+UserSchema.plugin(uniqueValidator, { message: 'already taken' });
 
 UserSchema.index({ loc: '2dsphere' });
 
