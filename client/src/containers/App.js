@@ -5,21 +5,38 @@ import { Layout } from 'antd';
 import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import HeaderContent from '../components/HeaderContent';
+import FooterContent from '../components/FooterContent';
 
-const { Content } = Layout;
+const { Content, Header, Footer } = Layout;
 const App = () => (
   <Layout style={{ height: '100vh' }}>
-    <Header />
-    <Content>
+    <Header
+      style={{
+        textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <HeaderContent />
+    </Header>
+    <Content
+      style={{
+        background: '#fff',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}
+    >
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/login" component={Login} />
       </Switch>
     </Content>
-    <Footer />
+    <Footer>
+      <FooterContent />
+    </Footer>
   </Layout>
 );
 export default App;
