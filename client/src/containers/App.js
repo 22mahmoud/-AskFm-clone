@@ -20,14 +20,7 @@ const App = () => (
     >
       <HeaderContent />
     </Header>
-    <Content
-      style={{
-        background: '#fff',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-      }}
-    >
+    <Content style={{ background: '#fff' }}>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/signup" component={SignUp} />
