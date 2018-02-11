@@ -2,7 +2,6 @@ import React from 'react';
 import { Form, Icon, Input, Button } from 'antd';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import Radium from 'radium';
 
 import normalizeErrors from '../normalizeErrors';
 
@@ -10,34 +9,11 @@ import normalizeErrors from '../normalizeErrors';
 
 const FormItem = Form.Item;
 
-const styles = {
-  container: {
-    margin: '.3em 0',
-    background: '#fff',
-    textAlign: 'center',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '0 8em',
-
-    '@media (max-width: 20em)': {
-      padding: '0 1em',
-    },
-  },
-
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-};
-
 class SignUp extends React.Component {
   state = {};
   checkPassword = (rule, value, callback) => {
     const { form } = this.props;
-    console.log(value, 'Value');
+
     if (value.length !== 0 && (value.length < 5 || value.length > 100)) {
       callback('The password needs to be between 5 and 100 characters long.');
     } else {
@@ -71,8 +47,8 @@ class SignUp extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <div style={styles.container}>
-        <Form style={styles.form} onSubmit={this.handleSubmit}>
+      <div>
+        <Form onSubmit={this.handleSubmit}>
           <FormItem>
             {getFieldDecorator('username', {
               rules: [
@@ -158,4 +134,4 @@ const RegisterMutation = gql`
   }
 `;
 
-export default compose(graphql(RegisterMutation), Form.create())(Radium(SignUp));
+export default compose(graphql(RegisterMutation), Form.create())(SignUp);

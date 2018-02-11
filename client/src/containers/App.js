@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
-import Radium from 'radium';
 
 import Home from './Home';
 import Login from './Login';
@@ -9,22 +8,11 @@ import SignUp from './SignUp';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-const styles = {
-  content: {
-    display: 'flex',
-    justifyContent: 'center',
-
-    color: '#fff',
-    background: ' #784589',
-    backgroundSize: '1400px',
-  },
-};
-
 const { Content } = Layout;
 const App = () => (
   <Layout style={{ height: '100vh' }}>
     <Header />
-    <Content style={styles.content}>
+    <Content>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/signup" component={SignUp} />
@@ -34,4 +22,4 @@ const App = () => (
     <Footer />
   </Layout>
 );
-export default Radium(App);
+export default App;

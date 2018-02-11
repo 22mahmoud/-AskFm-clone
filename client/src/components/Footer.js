@@ -1,7 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Layout } from 'antd';
-import Radium from 'radium';
 
 const { Footer: FooterWrapper } = Layout;
 
@@ -41,4 +40,4 @@ const Footer = () => (
   </FooterWrapper>
 );
 
-export default withRouter(Radium(Footer));
+export default withRouter(Footer);
