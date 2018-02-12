@@ -20,7 +20,7 @@ const App = () => (
     >
       <HeaderContent />
     </Header>
-    <Content style={{ background: '#fff' }}>
+    <Content style={{}}>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/signup" component={SignUp} />
