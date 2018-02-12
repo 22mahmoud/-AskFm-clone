@@ -46,7 +46,7 @@ class SignUp extends React.Component {
       <React.Fragment>
         <Row type="flex" justify="center" style={{ textAlign: 'center' }}>
           <Col xs={16} sm={14} md={12} lg={10} xl={8}>
-            <h1> Sign Up </h1>
+            <h1 style={{ color: '#fff' }}> Sign Up </h1>
           </Col>
         </Row>
         <Row type="flex" justify="center">

@@ -3,7 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 
 const HeaderContent = () => (
   <Link to="/" style={{ textDecoration: 'none' }}>
-    <h1 style={{ color: '#fff' }}> TheQ. </h1>
+    <h1> TheQ. </h1>
   </Link>
 );
 

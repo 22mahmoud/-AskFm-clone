@@ -10,9 +10,10 @@ import FooterContent from '../components/FooterContent';
 
 const { Content, Header, Footer } = Layout;
 const App = () => (
-  <Layout style={{ height: '100vh' }}>
+  <Layout style={{ minHeight: '100vh' }}>
     <Header
       style={{
+        background: '#fff',
         textAlign: 'center',
         display: 'flex',
         justifyContent: 'center',
@@ -20,14 +21,14 @@ const App = () => (
     >
       <HeaderContent />
     </Header>
-    <Content style={{}}>
+    <Content style={{ margin: '5em 0' }}>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/login" component={Login} />
       </Switch>
     </Content>
-    <Footer>
+    <Footer style={{ background: '#fff' }}>
       <FooterContent />
     </Footer>
   </Layout>

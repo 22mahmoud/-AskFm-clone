@@ -6,7 +6,7 @@ const Home = ({ history }) => (
   <React.Fragment>
     <Row type="flex" justify="center">
       <Col xs={22} sm={20} md={18} lg={12} xl={12}>
-        <h3 style={{ textAlign: 'center' }}>
+        <h3 style={{ textAlign: 'center', color: '#fff' }}>
           Curious? Just ask! <br />Openly or anonymously.
         </h3>
       </Col>
