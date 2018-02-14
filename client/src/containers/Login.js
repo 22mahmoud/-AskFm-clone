@@ -25,7 +25,7 @@ class Login extends React.Component {
 
           Object.entries(errorsObj).forEach(([key, value]) => {
             let newValue;
-
+            
             if (value.indexOf('already taken') > -1) {
               newValue = `${key} is ${value}`;
             } else {

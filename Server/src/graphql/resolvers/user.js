@@ -60,7 +60,7 @@ export default {
         if (!user) {
           throw new Error(
             JSON.stringify({
-              path: 'user',
+              path: 'email',
               message: 'User not exist!',
             }),
             'user',
