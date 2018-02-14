@@ -14,24 +14,23 @@ class Login extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        const { data: { login: { token, isOk, errors } } } = await this.props.mutate({
+        const { data: { login: { isOk, errors } } } = await this.props.mutate({
           variables: values,
         });
         if (isOk) {
-          console.log(token);
+          // console.log(token);
           this.props.history.push('/');
         } else if (errors) {
           const errorsObj = normalizeErrors(errors);
 
           Object.entries(errorsObj).forEach(([key, value]) => {
             let newValue;
-            
             if (value.indexOf('already taken') > -1) {
               newValue = `${key} is ${value}`;
             } else {
               newValue = value;
             }
-            console.log(errorsObj);
+            // console.log(errorsObj);
             this.props.form.setFields({
               [key]: {
                 value: '',

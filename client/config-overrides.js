@@ -10,6 +10,7 @@ module.exports = function override(config, env) {
       '@layout-body-background': '#2b3237',
       '@layout-header-background': '#2b3237',
       '@layout-footer-background': '#2b3237',
+      '@error-color': '#EC644B',
     },
   })(config, env);
 

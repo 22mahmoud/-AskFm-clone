@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-client-preset';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import 'antd/dist/antd.css';
 
 import App from './containers/App';
+import store from './store';
 import registerServiceWorker from './registerServiceWorker';
 
 const client = new ApolloClient({
@@ -16,9 +18,11 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </ApolloProvider>,
   document.getElementById('root'),
 );
