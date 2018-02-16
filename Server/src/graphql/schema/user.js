@@ -45,11 +45,14 @@ export default `
         token: String
         errors: [Error]
     }
-
+    type MeResponse {
+        user: User!
+        isOk: Boolean!
+    }
     type Query {
         getUser(email: String!): User
         getNearby: [User]
-        me: Me
+        me: MeResponse
     } 
 
     type Mutation {

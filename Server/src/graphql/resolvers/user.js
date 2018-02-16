@@ -23,10 +23,21 @@ export default {
     },
     me: async (_, args, { user }) => {
       try {
-        return await requireUser(user);
+        const me = await requireUser(user);
+        if (me) {
+          return {
+            isOk: true,
+            user: me,
+          };
+        }
       } catch (error) {
-        throw error;
+        return {
+          isOk: false,
+        };
       }
+      return {
+        isOk: false,
+      };
     },
   },
 
