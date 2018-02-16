@@ -100,5 +100,4 @@ class Login extends React.Component {
   }
 }
 
-
 export default compose(graphql(LoginMutation), connect(undefined, { login }), Form.create())(Login);
