@@ -3,7 +3,7 @@ import { Form, Icon, Input, Button, Row, Col } from 'antd';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 
-import normalizeErrors from '../normalizeErrors';
+import normalizeErrors from '../helpers/normalizeErrors';
 
 const FormItem = Form.Item;
 

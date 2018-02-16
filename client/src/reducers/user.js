@@ -1,8 +1,8 @@
-import { LOGIN, GET_USER_INFO, LOGOUT } from '../actions/actionTypes';
+import { LOGIN, SET_USER, LOGOUT } from '../actions/actionTypes';
 
 const initialState = {
   isAuth: false,
-  info: null,
+  user: null,
 };
 
 const user = (state = initialState, action) => {
@@ -12,10 +12,10 @@ const user = (state = initialState, action) => {
         ...state,
         isAuth: true,
       };
-    case GET_USER_INFO:
+    case SET_USER:
       return {
         ...state,
-        info: action.payload,
+        user: action.payload,
       };
     case LOGOUT:
       return initialState;

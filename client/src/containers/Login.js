@@ -2,8 +2,10 @@ import React from 'react';
 import { Form, Icon, Input, Button, Row, Col } from 'antd';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
+import { connect } from 'react-redux';
 
-import normalizeErrors from '../normalizeErrors';
+import normalizeErrors from '../helpers/normalizeErrors';
+import { login } from '../actions';
 
 const FormItem = Form.Item;
 
@@ -14,11 +16,12 @@ class Login extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        const { data: { login: { isOk, errors } } } = await this.props.mutate({
+        const { data: { login: { isOk, errors, token } } } = await this.props.mutate({
           variables: values,
         });
         if (isOk) {
-          // console.log(token);
+          localStorage.setItem('token', token);
+          this.props.login();
           this.props.history.push('/');
         } else if (errors) {
           const errorsObj = normalizeErrors(errors);
@@ -30,7 +33,6 @@ class Login extends React.Component {
             } else {
               newValue = value;
             }
-            // console.log(errorsObj);
             this.props.form.setFields({
               [key]: {
                 value: '',
@@ -111,4 +113,4 @@ const LoginMutation = gql`
   }
 `;
 
-export default compose(graphql(LoginMutation), Form.create())(Login);
+export default compose(graphql(LoginMutation), connect(undefined, { login }), Form.create())(Login);
