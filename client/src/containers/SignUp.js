@@ -1,9 +1,9 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Row, Col } from 'antd';
-import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 
 import normalizeErrors from '../helpers/normalizeErrors';
+import { RegisterMutation } from '../graphql/mutations';
 
 const FormItem = Form.Item;
 
@@ -108,17 +108,5 @@ class SignUp extends React.Component {
     );
   }
 }
-
-const RegisterMutation = gql`
-  mutation($username: String!, $email: String!, $password: String!) {
-    register(username: $username, email: $email, password: $password) {
-      isOk
-      errors {
-        path
-        message
-      }
-    }
-  }
-`;
 
 export default compose(graphql(RegisterMutation), Form.create())(SignUp);

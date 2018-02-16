@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Row, Col } from 'antd';
-import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux';
 
 import normalizeErrors from '../helpers/normalizeErrors';
 import { login } from '../actions';
+import { LoginMutation } from '../graphql/mutations';
 
 const FormItem = Form.Item;
 
@@ -100,17 +100,5 @@ class Login extends React.Component {
   }
 }
 
-const LoginMutation = gql`
-  mutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      isOk
-      token
-      errors {
-        path
-        message
-      }
-    }
-  }
-`;
 
 export default compose(graphql(LoginMutation), connect(undefined, { login }), Form.create())(Login);
