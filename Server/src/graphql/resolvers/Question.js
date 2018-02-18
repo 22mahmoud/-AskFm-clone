@@ -17,7 +17,7 @@ export default {
     getQuestions: async (_, args, { user }) => {
       try {
         await requireUser(user);
-        const p1 = Question.find({}).sort({ createdAt: -1 });
+        const p1 = Question.find({ answer: { $exists: true } }).sort({ createdAt: -1 });
         const p2 = LikeQuestion.findOne({ userId: user._id });
         const [questions, likes] = await Promise.all([p1, p2]);
         const QuestionsToSend = questions.reduce((arr, question) => {
@@ -66,7 +66,7 @@ export default {
     AnswerQuestion: async (_, { answer, questionID }, { user }) => {
       try {
         await requireUser(user);
-        const { theResponder, answer: qAnswer } = await Question.findById(questionID,);
+        const { theResponder, answer: qAnswer } = await Question.findById(questionID);
 
         if (theResponder.toString() !== user._id.toString()) {
           throw Error;
@@ -119,10 +119,10 @@ export default {
           maxDistance: 1 / 111.12,
         });
 
-        const allUsers = users.filter(u => u._id.toString() !== user._id.toString(),);
+        const allUsers = users.filter(u => u._id.toString() !== user._id.toString());
         const questions = [];
         allUsers.map(u =>
-          questions.push(Question.create({ theAsker: user._id, text, theResponder: u }),),);
+          questions.push(Question.create({ theAsker: user._id, text, theResponder: u })));
 
         return Promise.all(questions);
       } catch (error) {
