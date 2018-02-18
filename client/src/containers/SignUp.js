@@ -8,10 +8,13 @@ import { RegisterMutation } from '../graphql/mutations';
 const FormItem = Form.Item;
 
 class SignUp extends React.Component {
-  state = {};
+  state = {
+    loading: false,
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({ loading: true });
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         const { data: { register: { isOk, errors } } } = await this.props.mutate({
@@ -19,6 +22,7 @@ class SignUp extends React.Component {
         });
         if (isOk) {
           this.props.history.push('/');
+          this.setState({ loading: false });
         } else if (errors) {
           const errorsObj = normalizeErrors(errors);
 
@@ -36,11 +40,13 @@ class SignUp extends React.Component {
               },
             });
           });
+          this.setState({ loading: false });
         }
       }
     });
   };
   render() {
+    const { loading } = this.state;
     const { getFieldDecorator } = this.props.form;
     return (
       <React.Fragment>
@@ -97,7 +103,7 @@ class SignUp extends React.Component {
                 />)}
               </FormItem>
               <FormItem>
-                <Button style={{ width: '100%' }} type="primary" htmlType="submit">
+                <Button loading={!!loading} style={{ width: '100%' }} type="primary" htmlType="submit">
                   Sign Up
                 </Button>
               </FormItem>

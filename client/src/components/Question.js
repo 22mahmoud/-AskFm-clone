@@ -24,7 +24,10 @@ class Question extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form
+        onSubmit={this.handleSubmit}
+        style={{ background: 'rgba(0, 0, 0, 0.2)', padding: 18, borderRadius: 8 }}
+      >
         <FormItem>{getFieldDecorator('question')(<TextArea placeholder="Question" />)}</FormItem>
         <Row type="flex" justify="end">
           <Col>

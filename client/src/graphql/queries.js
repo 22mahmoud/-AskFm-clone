@@ -15,4 +15,24 @@ export const MeQuery = gql`
   }
 `;
 
+export const GetQestionsQuery = gql`
+  {
+    getQuestions {
+      _id
+      text
+      isLiked
+      likesCount
+      theAsker {
+        _id
+        username
+      }
+      theResponder {
+        _id
+        username
+      }
+      answer
+    }
+  }
+`;
+
 export const GetUserQuery = '';

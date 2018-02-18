@@ -10,10 +10,12 @@ import { LoginMutation } from '../graphql/mutations';
 const FormItem = Form.Item;
 
 class Login extends React.Component {
-  state = {};
-
+  state = {
+    loading: false,
+  };
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({ loading: true })
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         const { data: { login: { isOk, errors, token } } } = await this.props.mutate({
@@ -23,6 +25,7 @@ class Login extends React.Component {
           localStorage.setItem('token', token);
           this.props.login();
           this.props.history.push('/feed');
+          this.setState({ loading: false })
         } else if (errors) {
           const errorsObj = normalizeErrors(errors);
 
@@ -40,13 +43,14 @@ class Login extends React.Component {
               },
             });
           });
+          this.setState({ loading: false })
         }
       }
     });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    // const { isLogged } = this.state;
+     const { loading } = this.state;
 
     return (
       <React.Fragment>
@@ -90,7 +94,7 @@ class Login extends React.Component {
                 />)}
               </FormItem>
               <FormItem>
-                <Button style={{ width: '100%' }} type="primary" htmlType="submit">
+                <Button loading={!!loading} style={{ width: '100%' }} type="primary" htmlType="submit">
                   Login
                 </Button>
               </FormItem>

@@ -6,6 +6,7 @@ import { Row, Col } from 'antd';
 import { logOut } from '../actions';
 import { MeQuery } from '../graphql/queries';
 import Question from '../components/Question';
+import QuestionList from '../components/QuestionsList/QuestionsList';
 
 class Feed extends React.Component {
   state = {
@@ -42,16 +43,10 @@ class Feed extends React.Component {
     }
 
     return (
-      <Row type="flex" justify="start">
-        <Col
-          xs={16}
-          sm={14}
-          md={12}
-          lg={10}
-          xl={8}
-          style={{ background: 'rgba(0, 0, 0, 0.2)', padding: 18, borderRadius: 8 }}
-        >
+      <Row type="flex" justify="start" style={{ padding: 12, color: '#fff' }}>
+        <Col xs={24} sm={24} md={16} lg={14} xl={12}>
           <Question />
+          <QuestionList />
         </Col>
       </Row>
     );
