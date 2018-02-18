@@ -43,10 +43,20 @@ class Feed extends React.Component {
     }
 
     return (
-      <Row type="flex" justify="start" style={{ padding: 12, color: '#fff' }}>
+      <Row type="flex" justify="center" style={{ margin: 15, color: '#fff' }}>
         <Col xs={24} sm={24} md={16} lg={14} xl={12}>
           <Question />
-          <QuestionList />
+          <div
+            style={{
+              background: '#f2f2f9',
+              marginTop: 15,
+              color: '#000',
+              padding: 8,
+              borderRadius: 2,
+            }}
+          >
+            <QuestionList />
+          </div>
         </Col>
       </Row>
     );

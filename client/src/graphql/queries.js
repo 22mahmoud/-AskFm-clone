@@ -31,6 +31,8 @@ export const GetQestionsQuery = gql`
         username
       }
       answer
+      createdAt
+      updatedAt
     }
   }
 `;
