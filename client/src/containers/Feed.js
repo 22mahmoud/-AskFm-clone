@@ -1,9 +1,11 @@
 import React from 'react';
 import { withApollo } from 'react-apollo';
 import { connect } from 'react-redux';
+import { Row, Col } from 'antd';
 
 import { logOut } from '../actions';
 import { MeQuery } from '../graphql/queries';
+import Question from '../components/Question';
 
 class Feed extends React.Component {
   state = {
@@ -40,13 +42,18 @@ class Feed extends React.Component {
     }
 
     return (
-      <h1
-        style={{
-          color: '#fff',
-        }}
-      >
-        {user.username}
-      </h1>
+      <Row type="flex" justify="start">
+        <Col
+          xs={16}
+          sm={14}
+          md={12}
+          lg={10}
+          xl={8}
+          style={{ background: 'rgba(0, 0, 0, 0.2)', padding: 18, borderRadius: 8 }}
+        >
+          <Question />
+        </Col>
+      </Row>
     );
   }
 }

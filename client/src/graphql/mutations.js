@@ -24,3 +24,18 @@ export const RegisterMutation = gql`
     }
   }
 `;
+
+export const SendQuestiondMutation = gql`
+  mutation($text: String!, $theResponder: ID!) {
+    sendQuestion(text: $text, theResponder: $theResponder) {
+      question {
+        _id
+        text
+      }
+      errors {
+        path
+        message
+      }
+    }
+  }
+`;
