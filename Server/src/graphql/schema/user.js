@@ -46,7 +46,7 @@ export default `
         errors: [Error]
     }
     type MeResponse {
-        user: User!
+        user: User
         isOk: Boolean!
     }
     type Query {

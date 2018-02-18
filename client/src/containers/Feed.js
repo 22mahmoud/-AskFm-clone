@@ -1,8 +1,56 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
+import { withApollo } from 'react-apollo';
+import { connect } from 'react-redux';
 
+import { logOut } from '../actions';
 import { MeQuery } from '../graphql/queries';
 
-const Feed = () => <h1 style={{ color: '#fff' }}> FEED </h1>;
+class Feed extends React.Component {
+  state = {
+    loading: true,
+    user: null,
+  };
 
-export default graphql(MeQuery, { props: wow => console.log(wow, 'PROPS') })(Feed);
+  componentWillMount() {
+    this.getUser();
+  }
+
+  getUser = async () => {
+    this.setState({
+      loading: true,
+    });
+    const { data: { me: { isOk, user } } } = await this.props.client.query({
+      query: MeQuery,
+    });
+
+    if (!isOk) {
+      return;
+    }
+
+    this.setState({
+      loading: false,
+      user,
+    });
+  };
+
+  render() {
+    const { loading, user } = this.state;
+    if (loading) {
+      return null;
+    }
+
+    return (
+      <h1
+        style={{
+          color: '#fff',
+        }}
+      >
+        {user.username}
+      </h1>
+    );
+  }
+}
+
+export default withApollo(connect(undefined, {
+  logOut,
+})(Feed));

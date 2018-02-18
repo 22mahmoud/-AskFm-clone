@@ -22,7 +22,7 @@ class Login extends React.Component {
         if (isOk) {
           localStorage.setItem('token', token);
           this.props.login();
-          this.props.history.push('/');
+          this.props.history.push('/feed');
         } else if (errors) {
           const errorsObj = normalizeErrors(errors);
 
@@ -46,6 +46,8 @@ class Login extends React.Component {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
+    // const { isLogged } = this.state;
+
     return (
       <React.Fragment>
         <Row type="flex" justify="center" style={{ textAlign: 'center' }}>

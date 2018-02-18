@@ -24,20 +24,24 @@ export default {
     me: async (_, args, { user }) => {
       try {
         const me = await requireUser(user);
-        if (me) {
+        if (!me) {
           return {
-            isOk: true,
-            user: me,
+            isOk: false,
+            user: null,
           };
         }
+
+        return {
+          isOk: true,
+          user: me,
+        };
       } catch (error) {
+        console.log(error);
         return {
           isOk: false,
+          user: null,
         };
       }
-      return {
-        isOk: false,
-      };
     },
   },
 

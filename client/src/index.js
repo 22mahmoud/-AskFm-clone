@@ -18,17 +18,21 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:3030/graphql',
 });
 
-const token = localStorage.getItem('token');
-if (token) {
+const isToken = localStorage.getItem('token');
+if (isToken) {
   store.dispatch(login());
 }
 
-const authLink = setContext((_, { headers }) => ({
-  headers: {
-    ...headers,
-    authorization: token || '',
-  },
-}));
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('token');
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token || '',
+    },
+  };
+});
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
