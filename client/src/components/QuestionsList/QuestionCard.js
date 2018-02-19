@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
+import LikeButton from './LikeButton';
+
 const styles = {
   flex: {
     display: 'flex',
@@ -11,7 +13,7 @@ const styles = {
 
 const QuestionCard = ({
   question: {
-    theAsker, theResponder, text, answer, updatedAt,
+    _id, theAsker, theResponder, text, answer, updatedAt, isLiked, likesCount,
   },
 }) => (
   <div style={{ background: '#fff', marginBottom: 20, padding: 15 }}>
@@ -28,6 +30,7 @@ const QuestionCard = ({
       • <p style={{ paddingLeft: 5, fontWeight: 'light' }}> about {moment(updatedAt).fromNow()} </p>
     </div>
     <p> {answer} </p>
+    <LikeButton id={_id} likesCount={likesCount} isLiked={isLiked} />
   </div>
 );
 

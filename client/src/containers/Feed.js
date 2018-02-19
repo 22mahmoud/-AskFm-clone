@@ -48,10 +48,10 @@ class Feed extends React.Component {
           <Question />
           <div
             style={{
-              background: '#f2f2f9',
+              background: 'rgb(205, 205, 217)',
               marginTop: 15,
               color: '#000',
-              padding: 8,
+              padding: '5 0',
               borderRadius: 2,
             }}
           >

@@ -39,3 +39,20 @@ export const SendQuestiondMutation = gql`
     }
   }
 `;
+
+export const LikeQuestionToggleMutation = gql`
+  mutation($questionID: ID!) {
+    likeQuestionToggle(questionID: $questionID) {
+      question {
+        _id
+        isLiked
+        text
+        likesCount
+      }
+      errors {
+        path
+        message
+      }
+    }
+  }
+`;
