@@ -44,14 +44,10 @@ export const LikeQuestionToggleMutation = gql`
   mutation($questionID: ID!) {
     likeQuestionToggle(questionID: $questionID) {
       question {
+        __typename
         _id
         isLiked
-        text
         likesCount
-      }
-      errors {
-        path
-        message
       }
     }
   }

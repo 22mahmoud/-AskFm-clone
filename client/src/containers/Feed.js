@@ -1,9 +1,7 @@
 import React from 'react';
 import { withApollo } from 'react-apollo';
-import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
 
-import { logOut } from '../actions';
 import { MeQuery } from '../graphql/queries';
 import Question from '../components/Question';
 import QuestionList from '../components/QuestionsList/QuestionsList';
@@ -63,6 +61,4 @@ class Feed extends React.Component {
   }
 }
 
-export default withApollo(connect(undefined, {
-  logOut,
-})(Feed));
+export default withApollo(Feed);

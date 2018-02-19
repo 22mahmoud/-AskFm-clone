@@ -31,7 +31,6 @@ export default `
     }
     type Subscription {
         questionLiked: Question
-
     }
     
 
