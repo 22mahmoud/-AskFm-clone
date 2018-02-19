@@ -23,11 +23,17 @@ export default `
         getQuestions: [Question]
     }
 
-
     type Mutation {
         sendQuestion(text: String!,  theResponder: ID!, isLiked: Boolean = false): QuestionResponse
         AnswerQuestion(answer: String!, questionID: ID!): QuestionResponse
-        likeQuestionToggle(questionID: ID!): QuestionResponse
         sendQuestionForNearby(text: String!): [Question]
+        likeQuestionToggle(questionID: ID!): QuestionResponse
     }
+    type Subscription {
+        questionLiked: Question
+
+    }
+    
+
+      
 `;

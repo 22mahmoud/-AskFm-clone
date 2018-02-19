@@ -4,6 +4,9 @@ import Question from '../../models/Question';
 import LikeQuestion from '../../models/LikeQuestion';
 
 import { requireUser } from '../../services/auth';
+import { pubsub } from '../../config/pubsub';
+
+export const QUESTION_LIKED = 'questionLiked';
 
 export default {
   Question: {
@@ -12,7 +15,6 @@ export default {
     theResponder: ({ theResponder }) => User.findById(theResponder),
     // likes: ({ likes }) => likes.map(l => User.findById(l)),
   },
-
   Query: {
     getQuestions: async (_, args, { user }) => {
       try {
@@ -128,6 +130,11 @@ export default {
       } catch (error) {
         throw error;
       }
+    },
+  },
+  Subscription: {
+    questionLiked: {
+      subscribe: () => pubsub.asyncIterator(QUESTION_LIKED),
     },
   },
 };

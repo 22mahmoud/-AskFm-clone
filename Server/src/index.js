@@ -2,9 +2,12 @@ import express from 'express';
 import { createServer } from 'http';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import { execute, subscribe } from 'graphql';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
+
 import path from 'path';
 
 import constants from './config/constants';
@@ -47,6 +50,7 @@ app.use(
   bodyParser.json(),
   graphiqlExpress({
     endpointURL: constants.GRAPHQL_PATH,
+    subscriptionsEndpoint: `ws://localhost:${constants.PORT}/subscriptions`,
   }),
 );
 
@@ -67,6 +71,18 @@ graphQlServer.listen(constants.PORT, (err) => {
     // eslint-disable-next-line no-console
     console.error(err);
   } else {
+    // eslint-disable-next-line no-new
+    new SubscriptionServer(
+      {
+        execute,
+        subscribe,
+        schema,
+      },
+      {
+        server: graphQlServer,
+        path: '/subscriptions',
+      },
+    );
     // eslint-disable-next-line no-console
     console.log(`App listen on port: ${constants.PORT}`);
   }
