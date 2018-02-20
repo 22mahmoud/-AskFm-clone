@@ -18,10 +18,9 @@ const App = () => (
         position: 'fixed',
         width: '100%',
         zIndex: 1000,
-        background: '#fff',
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
+        background: '#2b3237',
+        color: '#FF643C',
+        borderBottom: '.2px solid #1c1d1e ',
       }}
     >
       <HeaderContent />
