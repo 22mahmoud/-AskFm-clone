@@ -21,7 +21,7 @@ class Question extends React.Component {
             theResponder: '5a84963f348d6e254c3f3750',
           },
         });
-        // console.log(response);
+        console.log(response); // eslint-disable-line
         this.props.form.resetFields('question');
         this.setState({ loading: false });
       }

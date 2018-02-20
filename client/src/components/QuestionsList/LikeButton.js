@@ -35,10 +35,11 @@ export default graphql(LikeQuestionToggleMutation, {
         optimisticResponse: {
           __typename: 'Mutation',
           likeQuestionToggle: {
+            __typename: 'QuestionResponse',
             question: {
               __typename: 'Question',
               _id: ownProps.id,
-              likesCount: ownProps.isLiked ? ownProps.likesCount + 1 : ownProps.likesCount - 1,
+              likesCount: ownProps.isLiked ? ownProps.likesCount - 1 : ownProps.likesCount + 1,
               isLiked: !ownProps.isLiked,
             },
           },
