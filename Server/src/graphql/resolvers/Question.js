@@ -7,6 +7,7 @@ import { requireUser } from '../../services/auth';
 import { pubsub } from '../../config/pubsub';
 
 export const QUESTION_LIKED = 'questionLiked';
+export const QUESTION_SENDED = 'questionSended';
 
 export default {
   Question: {
@@ -65,6 +66,9 @@ export default {
           ...args,
           theAsker: user._id,
         });
+
+        pubsub.publish(QUESTION_SENDED, { [QUESTION_SENDED]: { ...question } });
+
         return {
           question,
           errors: null,
@@ -91,6 +95,7 @@ export default {
 
         const updatedQuestion = await Question.findByIdAndUpdate(questionID, {
           answer,
+          answerDate: new Date().getTime(),
         });
         return {
           question: updatedQuestion,
@@ -146,6 +151,9 @@ export default {
   Subscription: {
     questionLiked: {
       subscribe: () => pubsub.asyncIterator(QUESTION_LIKED),
+    },
+    questionSended: {
+      subscribe: () => pubsub.asyncIterator(QUESTION_SENDED),
     },
   },
 };

@@ -77,6 +77,13 @@ graphQlServer.listen(constants.PORT, (err) => {
         execute,
         subscribe,
         schema,
+        async onConnect({ token }) {
+          if (!token) {
+            return {};
+          }
+          const user = await decodeToken(token);
+          return { user };
+        },
       },
       {
         server: graphQlServer,

@@ -11,8 +11,8 @@ export default `
         answer: String
         likesCount: Int!
         isLiked: Boolean! 
+        answerDate: Date
         createdAt: Date!
-        updatedAt: Date!
     }
 
     type QuestionResponse {
@@ -32,6 +32,7 @@ export default `
     }
     type Subscription {
         questionLiked: Question
+        questionSended: Question
     }
     
 

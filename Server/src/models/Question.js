@@ -10,6 +10,9 @@ const QuestionSchema = new Schema(
     answer: {
       type: String,
     },
+    answerDate: {
+      type: Date,
+    },
     theAsker: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -29,18 +32,10 @@ const QuestionSchema = new Schema(
 
 QuestionSchema.statics = {
   incLikesCount(questionId) {
-    return this.findByIdAndUpdate(
-      questionId,
-      { $inc: { likesCount: 1 } },
-      { new: true },
-    );
+    return this.findByIdAndUpdate(questionId, { $inc: { likesCount: 1 } }, { new: true });
   },
   decLikesCount(questionId) {
-    return this.findByIdAndUpdate(
-      questionId,
-      { $inc: { likesCount: -1 } },
-      { new: true },
-    );
+    return this.findByIdAndUpdate(questionId, { $inc: { likesCount: -1 } }, { new: true });
   },
 };
 
