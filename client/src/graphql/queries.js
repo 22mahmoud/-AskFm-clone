@@ -37,4 +37,18 @@ export const GetQestionsQuery = gql`
   }
 `;
 
+export const GetMyNotAnswerdQuestionsQuery = gql`
+  {
+    getMyNotAnswerdQuestions {
+      _id
+      text
+      theAsker {
+        _id
+        username
+      }
+      createdAt
+    }
+  }
+`;
+
 export const GetUserQuery = '';

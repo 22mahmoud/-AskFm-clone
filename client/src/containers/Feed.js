@@ -1,7 +1,7 @@
 import React from 'react';
 import { withApollo } from 'react-apollo';
-import { Row, Col } from 'antd';
 
+import Container from '../components/Container';
 import { MeQuery } from '../graphql/queries';
 import Question from '../components/Question';
 import QuestionList from '../components/QuestionsList/QuestionsList';
@@ -41,22 +41,20 @@ class Feed extends React.Component {
     }
 
     return (
-      <Row type="flex" justify="center" style={{ margin: 15, color: '#fff' }}>
-        <Col xs={24} sm={24} md={16} lg={14} xl={12}>
-          <Question />
-          <div
-            style={{
-              background: 'rgb(205, 205, 217)',
-              marginTop: 15,
-              color: '#000',
-              padding: '5 0',
-              borderRadius: 2,
-            }}
-          >
-            <QuestionList />
-          </div>
-        </Col>
-      </Row>
+      <Container>
+        <Question />
+        <div
+          style={{
+            background: 'rgb(205, 205, 217)',
+            marginTop: 15,
+            color: '#000',
+            padding: '5 0',
+            borderRadius: 2,
+          }}
+        >
+          <QuestionList />
+        </div>
+      </Container>
     );
   }
 }
