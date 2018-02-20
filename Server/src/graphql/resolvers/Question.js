@@ -43,6 +43,17 @@ export default {
         throw error;
       }
     },
+    getMyNotAnswerdQuestions: async (_, args, { user }) => {
+      try {
+        const questions = await Question.find()
+          .exists('answer', false)
+          .where('theResponder', user._id)
+          .sort({ createdAt: -1 });
+        return questions;
+      } catch (error) {
+        throw error;
+      }
+    },
   },
 
   Mutation: {
