@@ -16,14 +16,16 @@ class SignUp extends React.Component {
     e.preventDefault();
     this.setState({ loading: true });
     this.props.form.validateFieldsAndScroll(async (err, values) => {
-      if (!err) {
+      if (err) {
+        this.setState({ loading: false });
+      } else if (!err) {
         const { data: { register: { isOk, errors } } } = await this.props.mutate({
           variables: values,
         });
         if (isOk) {
           this.props.history.push('/');
-          this.setState({ loading: false });
         } else if (errors) {
+          this.setState({ loading: false });
           const errorsObj = normalizeErrors(errors);
 
           Object.entries(errorsObj).forEach(([key, value]) => {
@@ -40,7 +42,6 @@ class SignUp extends React.Component {
               },
             });
           });
-          this.setState({ loading: false });
         }
       }
     });
@@ -103,7 +104,12 @@ class SignUp extends React.Component {
                 />)}
               </FormItem>
               <FormItem>
-                <Button loading={!!loading} style={{ width: '100%' }} type="primary" htmlType="submit">
+                <Button
+                  loading={!!loading}
+                  style={{ width: '100%' }}
+                  type="primary"
+                  htmlType="submit"
+                >
                   Sign Up
                 </Button>
               </FormItem>

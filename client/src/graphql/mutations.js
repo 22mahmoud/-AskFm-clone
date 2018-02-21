@@ -40,6 +40,34 @@ export const SendQuestiondMutation = gql`
   }
 `;
 
+export const AnswerQuestionMutation = gql`
+  mutation($answer: String!, $id: ID!) {
+    AnswerQuestion(answer: $answer, questionID: $id) {
+      question {
+        _id
+        text
+        isLiked
+        likesCount
+        theAsker {
+          _id
+          username
+        }
+        theResponder {
+          _id
+          username
+        }
+        answer
+        createdAt
+        answerDate
+      }
+      errors {
+        path
+        message
+      }
+    }
+  }
+`;
+
 export const LikeQuestionToggleMutation = gql`
   mutation($questionID: ID!) {
     likeQuestionToggle(questionID: $questionID) {

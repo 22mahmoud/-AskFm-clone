@@ -32,7 +32,7 @@ export const GetQestionsQuery = gql`
       }
       answer
       createdAt
-      updatedAt
+      answerDate
     }
   }
 `;
@@ -47,6 +47,19 @@ export const GetMyNotAnswerdQuestionsQuery = gql`
         username
       }
       createdAt
+    }
+  }
+`;
+
+export const GetMyNotAnsweredQuestionQuery = gql`
+  query($questionID: ID!) {
+    getMyNotAnsweredQuestion(questionID: $questionID) {
+      _id
+      text
+      theAsker {
+        _id
+        username
+      }
     }
   }
 `;

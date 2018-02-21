@@ -13,7 +13,7 @@ const styles = {
 
 const QuestionCard = ({
   question: {
-    _id, theAsker, theResponder, text, answer, updatedAt, isLiked, likesCount,
+    _id, theAsker, theResponder, text, answer, answerDate, isLiked, likesCount,
   },
 }) => (
   <div style={{ background: '#fff', marginBottom: 20, padding: 15 }}>
@@ -27,7 +27,8 @@ const QuestionCard = ({
       <Link style={{ paddingRight: 5, color: 'rgba(0, 0, 0, 0.7)' }} to={{ pathname: '/feed' }}>
         {theResponder.username}
       </Link>
-      • <p style={{ paddingLeft: 5, fontWeight: 'light' }}> about {moment(updatedAt).fromNow()} </p>
+      •
+      <p style={{ paddingLeft: 5, fontWeight: 'light' }}> about {moment(answerDate).fromNow()} </p>
     </div>
     <p> {answer} </p>
     <LikeButton id={_id} likesCount={likesCount} isLiked={isLiked} />

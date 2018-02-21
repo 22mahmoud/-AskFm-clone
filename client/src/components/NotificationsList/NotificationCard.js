@@ -2,11 +2,13 @@ import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
+import AnswerQuestion from '../AnswerQuestion';
+
 const NotificationCard = ({
   id, username, createdAt, userId, text,
 }) => (
   <div style={{ cursor: 'pointer', borderBottom: '1px solid #b2b2bb', marginBottom: 15 }}>
-    <Link to={{ pathname: '/feed' }} style={{ color: '#000' }}>
+    <Link to={{ pathname: `/q/${id}` }} style={{ color: '#000' }}>
       <div
         style={{
           display: 'flex',

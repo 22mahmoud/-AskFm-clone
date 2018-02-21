@@ -21,7 +21,7 @@ class Question extends React.Component {
             theResponder: '5a84963f348d6e254c3f3750',
           },
         });
-        console.log(response); // eslint-disable-line
+        console.log(response, 'SEND QUESTION'); // eslint-disable-line
         this.props.form.resetFields('question');
         this.setState({ loading: false });
       }
@@ -36,12 +36,17 @@ class Question extends React.Component {
         onSubmit={this.handleSubmit}
         style={{ background: 'rgba(0, 0, 0, 0.2)', padding: 18, borderRadius: 8 }}
       >
-        <FormItem>{getFieldDecorator('question')(<TextArea placeholder="Question" />)}</FormItem>
+        <FormItem>
+          {getFieldDecorator('question')(<TextArea
+            autosize={{ minRows: 2, maxRows: 4 }}
+            placeholder="What, When, Where ... ask"
+          />)}
+        </FormItem>
         <Row type="flex" justify="end">
           <Col>
             <FormItem>
               <Button loading={!!loading} type="primary" htmlType="submit">
-                Send <Icon type="caret-right" />
+                Send {loading || <Icon type="caret-right" />}
               </Button>
             </FormItem>
           </Col>
