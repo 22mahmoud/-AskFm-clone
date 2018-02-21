@@ -46,11 +46,22 @@ export default {
     },
     getMyNotAnswerdQuestions: async (_, args, { user }) => {
       try {
+        await requireUser(user);
         const questions = await Question.find()
           .exists('answer', false)
           .where('theResponder', user._id)
           .sort({ createdAt: -1 });
         return questions;
+      } catch (error) {
+        throw error;
+      }
+    },
+    getMyNotAnsweredQuestion: async (_, { questionID }, { user }) => {
+      try {
+        await requireUser(user);
+        const question = await Question.findOne({ _id: questionID, theResponder: user._id });
+
+        return question;
       } catch (error) {
         throw error;
       }
@@ -83,8 +94,8 @@ export default {
     AnswerQuestion: async (_, { answer, questionID }, { user }) => {
       try {
         await requireUser(user);
-        const { theResponder, answer: qAnswer } = await Question.findById(questionID);
-
+        const question = await Question.findById(questionID);
+        const { theResponder, answer: qAnswer } = question;
         if (theResponder.toString() !== user._id.toString()) {
           throw Error;
         }
@@ -92,13 +103,12 @@ export default {
         if (qAnswer) {
           throw Error;
         }
+        question.answer = answer;
+        question.answerDate = new Date().getTime();
+        await question.save();
 
-        const updatedQuestion = await Question.findByIdAndUpdate(questionID, {
-          answer,
-          answerDate: new Date().getTime(),
-        });
         return {
-          question: updatedQuestion,
+          question,
           errors: null,
         };
       } catch (error) {

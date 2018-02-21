@@ -10,7 +10,7 @@ export default `
         theResponder: User!
         answer: String
         likesCount: Int!
-        isLiked: Boolean! 
+        isLiked: Boolean
         answerDate: Date
         createdAt: Date!
     }
@@ -22,13 +22,14 @@ export default `
     type Query {
         getQuestions: [Question]
         getMyNotAnswerdQuestions: [Question]
+        getMyNotAnsweredQuestion(questionID: ID!): Question
     }
 
     type Mutation {
         sendQuestion(text: String!,  theResponder: ID!, isLiked: Boolean = false): QuestionResponse
         AnswerQuestion(answer: String!, questionID: ID!): QuestionResponse
-        sendQuestionForNearby(text: String!): [Question]
         likeQuestionToggle(questionID: ID!): QuestionResponse
+        sendQuestionForNearby(text: String!): [Question]
     }
     type Subscription {
         questionLiked: Question
