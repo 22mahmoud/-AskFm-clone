@@ -51,6 +51,7 @@ export default `
     }
     type Query {
         getUser(email: String!): User
+        getUsers: [User]
         getNearby: [User]
         me: MeResponse
     } 

@@ -1,11 +1,11 @@
+import { withFilter } from 'graphql-subscriptions';
+
 import FormatErrors from '../../FormatErrors';
 import User from '../../models/User';
 import Question from '../../models/Question';
 import LikeQuestion from '../../models/LikeQuestion';
-
 import { requireUser } from '../../services/auth';
 import { pubsub } from '../../config/pubsub';
-import { withFilter } from 'graphql-subscriptions';
 
 export const QUESTION_LIKED = 'questionLiked';
 export const QUESTION_SENDED = 'questionSended';

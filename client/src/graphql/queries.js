@@ -15,6 +15,15 @@ export const MeQuery = gql`
   }
 `;
 
+export const GetUsersQuery = gql`
+  {
+    getUsers {
+      _id
+      username
+    }
+  }
+`;
+
 export const GetQestionsQuery = gql`
   {
     getQuestions {

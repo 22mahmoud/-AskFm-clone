@@ -13,6 +13,15 @@ export default {
     following: ({ following }) => following.map(f => User.findById(f)),
   },
   Query: {
+    getUsers: async (_, args, { user }) => {
+      await requireUser(user);
+      try {
+        const users = await User.find({});
+        return users;
+      } catch (error) {
+        throw error;
+      }
+    },
     getUser: async (_, { email }) => {
       try {
         const user = await User.findOne({ email });
