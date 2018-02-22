@@ -7,7 +7,7 @@ import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
 import Feed from './Feed';
-import AnswerQuestion from '../components/AnswerQuestion';
+import AnswerQuestion from '../containers/AnswerQuestion';
 import Notifications from './Notifications';
 import HeaderContent from '../components/HeaderContent';
 import FooterContent from '../components/FooterContent';

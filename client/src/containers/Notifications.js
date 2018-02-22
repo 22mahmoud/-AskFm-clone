@@ -44,4 +44,6 @@ class Notifications extends React.Component {
   }
 }
 
-export default graphql(GetMyNotAnswerdQuestionsQuery, { options: { fetchPolicy: 'network-only' } })(Notifications);
+export default graphql(GetMyNotAnswerdQuestionsQuery, {
+  options: { fetchPolicy: 'cache-and-network' },
+})(Notifications);

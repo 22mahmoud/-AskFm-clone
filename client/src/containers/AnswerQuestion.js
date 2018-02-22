@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import { GetMyNotAnsweredQuestionQuery, GetQestionsQuery } from '../graphql/queries';
 import { AnswerQuestionMutation } from '../graphql/mutations';
-import Container from './Container';
+import Container from '../components/Container';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
