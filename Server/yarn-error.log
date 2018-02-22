@@ -2,7 +2,7 @@ Arguments:
   C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js start
 
 PATH: 
-  C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Java\jdk-9\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;"C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Java\jdk-9\bin";F:\Programming\xampp\php;C:\composer;C:\Program Files\erl9.0\bin;C:\ProgramData\chocolatey\bin;C:\ProgramData\chocolatey\lib\Elixir/bin;C:\Program Files\PostgreSQL\10\bin;C:\Program Files\PostgreSQL\10\bin;C:\Users\Mahmoud\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Mahmoud\AppData\Roaming\nvm\v9.3.0\node_modules\npm\bin;C:\Program Files\Git\bin;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files\Amazon\AWSCLI\;C:\Program Files (x86)\Yarn\bin;C:\Program Files (x86)\Elm Platform\0.18\bin;C:\Users\Mahmoud\AppData\Local\Programs\Python\Python36-32\Scripts\;C:\Users\Mahmoud\AppData\Local\Programs\Python\Python36-32\;C:\Users\Mahmoud\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Java\jdk-9\bin;C:\Program Files\Microsoft VS Code\bin;C:\Users\Mahmoud\AppData\Roaming\Composer\vendor\bin;C:\Program Files\erl9.0\bin;C:\Users\Mahmoud\AppData\Roaming\npm;C:\Users\Mahmoud\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Mahmoud\AppData\Roaming\nvm\v9.3.0\node_modules\npm\bin;C:\Program Files\Git\bin;C:\Users\Mahmoud\AppData\Local\Yarn\bin
+  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Mahmoud\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files\Java\jdk-9\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system3;C:\WINDOWS;C:\Program Files\Java\jdk-9\bin";F:\Programming\xampp\php;C:\composer;C:\Program Files\erl9.0\bin;C:\ProgramData\chocolatey\bin;C:\ProgramData\chocolatey\lib\Elixir\bin;C:\Program Files\PostgreSQL\10\bin;C:\Program Files\PostgreSQL\10\bin;C:\Users\Mahmoud\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Mahmoud\AppData\Roaming\nvm\v9.3.0\node_modules\npm\bin;C:\Program Files\Git\usr\bin;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files\Amazon\AWSCLI;C:\Program Files (x86)\Yarn\bin;C:\Program Files (x86)\Elm Platform\0.18\bin;C:\Users\Mahmoud\AppData\Local\Programs\Python\Python36-32\Scripts;C:\Users\Mahmoud\AppData\Local\Programs\Python\Python36-32;C:\Users\Mahmoud\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Java\jdk-9\bin;C:\Program Files\Microsoft VS Code\bin;C:\Users\Mahmoud\AppData\Roaming\Composer\vendor\bin;C:\Program Files\erl9.0\bin;C:\Users\Mahmoud\AppData\Roaming\npm;C:\Users\Mahmoud\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Mahmoud\AppData\Roaming\nvm\v9.3.0\node_modules\npm\bin;C:\Program Files\Git\usr\bin;C:\Users\Mahmoud\AppData\Local\Yarn\bin
 
 Yarn version: 
   1.4.0
@@ -4200,7 +4200,7 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 3221225786
+  Exit code: 1
   Command: C:\Windows\system32\cmd.exe
   Arguments: /d /s /c nodemon --exec babel-node src/index.js
   Directory: F:\Programming\Projects\askfm-clone\Server

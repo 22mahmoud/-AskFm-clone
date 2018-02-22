@@ -16,13 +16,16 @@ export default `
     }
 
     type QuestionResponse {
+        isOk: Boolean
         question: Question
         errors: [Error]
     }
+    
+    
     type Query {
         getQuestions: [Question]
         getMyNotAnswerdQuestions: [Question]
-        getMyNotAnsweredQuestion(questionID: ID!): Question
+        getMyNotAnsweredQuestion(questionID: ID!): QuestionResponse
     }
 
     type Mutation {

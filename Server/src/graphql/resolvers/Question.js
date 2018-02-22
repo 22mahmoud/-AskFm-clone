@@ -5,6 +5,7 @@ import LikeQuestion from '../../models/LikeQuestion';
 
 import { requireUser } from '../../services/auth';
 import { pubsub } from '../../config/pubsub';
+import { withFilter } from 'graphql-subscriptions';
 
 export const QUESTION_LIKED = 'questionLiked';
 export const QUESTION_SENDED = 'questionSended';
@@ -59,11 +60,23 @@ export default {
     getMyNotAnsweredQuestion: async (_, { questionID }, { user }) => {
       try {
         await requireUser(user);
-        const question = await Question.findOne({ _id: questionID, theResponder: user._id });
-
-        return question;
+        const question = await Question.findOne({ _id: questionID, theResponder: user._id }).exists(
+          'answer',
+          false,
+        );
+        if (!question) {
+          return {
+            isOk: false,
+            question: null,
+          };
+        }
+        return { question, isOk: true };
       } catch (error) {
-        throw error;
+        // throw error;
+        return {
+          isOk: false,
+          error: [],
+        };
       }
     },
   },
@@ -163,7 +176,10 @@ export default {
       subscribe: () => pubsub.asyncIterator(QUESTION_LIKED),
     },
     questionSended: {
-      subscribe: () => pubsub.asyncIterator(QUESTION_SENDED),
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(QUESTION_SENDED),
+        (payload, variables) => console.log(payload, ' => payload ', variables, ' => vars') || true,
+      ),
     },
   },
 };
