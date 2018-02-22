@@ -43,6 +43,7 @@ export const SendQuestiondMutation = gql`
 export const AnswerQuestionMutation = gql`
   mutation($answer: String!, $id: ID!) {
     AnswerQuestion(answer: $answer, questionID: $id) {
+      isOk
       question {
         _id
         text

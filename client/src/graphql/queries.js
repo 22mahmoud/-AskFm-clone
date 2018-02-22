@@ -54,11 +54,14 @@ export const GetMyNotAnswerdQuestionsQuery = gql`
 export const GetMyNotAnsweredQuestionQuery = gql`
   query($questionID: ID!) {
     getMyNotAnsweredQuestion(questionID: $questionID) {
-      _id
-      text
-      theAsker {
+      isOk
+      question {
         _id
-        username
+        text
+        theAsker {
+          _id
+          username
+        }
       }
     }
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql, compose } from 'react-apollo';
 import { Spin, Form, Input, Icon, Button } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 import { GetMyNotAnsweredQuestionQuery, GetQestionsQuery } from '../graphql/queries';
 import { AnswerQuestionMutation } from '../graphql/mutations';
@@ -28,7 +29,6 @@ class AnswerQuestion extends React.Component {
           },
           update: (store, { data: { AnswerQuestion: AQ } }) => {
             const data = store.readQuery({ query: GetQestionsQuery });
-
             data.getQuestions.unshift(AQ.question);
             store.writeQuery({ query: GetQestionsQuery, data });
           },
@@ -49,7 +49,9 @@ class AnswerQuestion extends React.Component {
       data: { loading, getMyNotAnsweredQuestion = {} },
       form: { getFieldDecorator },
     } = this.props;
+
     const { loading: L } = this.state;
+
     if (loading) {
       return (
         <Spin
@@ -62,7 +64,12 @@ class AnswerQuestion extends React.Component {
         />
       );
     }
-    const { _id: id, text, theAsker: { username } } = getMyNotAnsweredQuestion;
+    if (!getMyNotAnsweredQuestion.isOk) {
+      return <Redirect to={{ pathname: '/feed' }} />;
+    }
+
+    const { question: { _id: id, text, theAsker: { username } } } = getMyNotAnsweredQuestion;
+
     return (
       <Container>
         <div style={{ background: '#fff', padding: 20 }}>
@@ -88,7 +95,9 @@ class AnswerQuestion extends React.Component {
 
 export default compose(
   graphql(GetMyNotAnsweredQuestionQuery, {
-    options: ({ match: { params: { id } } }) => ({ variables: { questionID: id } }),
+    options: ({ match: { params: { id } } }) => ({
+      variables: { questionID: id },
+    }),
   }),
   graphql(AnswerQuestionMutation),
   Form.create(),
