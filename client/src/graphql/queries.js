@@ -76,4 +76,15 @@ export const GetMyNotAnsweredQuestionQuery = gql`
   }
 `;
 
+export const GetUserByUsernameQuery = gql`
+  query($username: String!) {
+    getUserByUsername(username: $username) {
+      _id
+      username
+      bio
+      avatar
+    }
+  }
+`;
+
 export const GetUserQuery = '';

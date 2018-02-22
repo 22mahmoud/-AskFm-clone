@@ -47,7 +47,7 @@ const HeaderContent = ({ isAuth, history, location: { pathname } }) => {
           }}
         />
         <Icon
-          onClick={() => history.push('/user')}
+          onClick={() => history.push('/u/22mahmoud')}
           type="user"
           style={{
             fontSize: 25,
