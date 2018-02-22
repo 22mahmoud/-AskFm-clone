@@ -22,6 +22,14 @@ export default {
         throw error;
       }
     },
+    getUserByUsername: async (_, { username }, { user }) => {
+      try {
+        await requireUser(user);
+        return await User.findOne({ username });
+      } catch (error) {
+        throw error;
+      }
+    },
     getUser: async (_, { email }) => {
       try {
         const user = await User.findOne({ email });
