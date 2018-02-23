@@ -9,4 +9,26 @@ export const QuestionLikedSubscriptions = gql`
   }
 `;
 
+export const QuestionAsnweredSubscriptions = gql`
+  subscription {
+    questionAsnwered {
+      _id
+      text
+      isLiked
+      likesCount
+      theAsker {
+        _id
+        username
+      }
+      theResponder {
+        _id
+        username
+      }
+      answer
+      createdAt
+      answerDate
+    }
+  }
+`;
+
 export const wowaa = '';

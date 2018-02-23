@@ -6,11 +6,15 @@ import Container from '../components/Container';
 import Question from '../components/Question';
 import QuestionCard from '../components/QuestionsList/QuestionCard';
 import { GetQestionsQuery } from '../graphql/queries';
-import { QuestionLikedSubscriptions } from '../graphql/subscriptions';
+import {
+  QuestionLikedSubscriptions,
+  QuestionAsnweredSubscriptions,
+} from '../graphql/subscriptions';
 
 class Feed extends React.Component {
   componentWillMount() {
     this.props.subscribeToQuestionliked();
+    this.props.subscribeToQuestionAnswered();
   }
 
   render() {
@@ -58,7 +62,6 @@ export default graphql(GetQestionsQuery, {
             return prev;
           }
           const newQuestion = subscriptionData.data.questionLiked;
-
           return {
             ...prev,
             getQuestions: prev.getQuestions.map(q =>
@@ -69,6 +72,28 @@ export default graphql(GetQestionsQuery, {
                 }
                 : q)),
           };
+        },
+      }),
+    subscribeToQuestionAnswered: () =>
+      props.questions.subscribeToMore({
+        document: QuestionAsnweredSubscriptions,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) {
+            return prev;
+          }
+          const newQuestion = subscriptionData.data.questionAsnwered;
+          console.log(subscriptionData, 'SUB DATA');
+          console.log(newQuestion, 'NEW');
+          console.log(prev, 'PREV');
+
+          if (!prev.getQuestions.find(q => q._id === newQuestion._id)) {
+            return {
+              ...prev,
+              getQuestions: [{ ...newQuestion }, ...prev.getQuestions],
+            };
+          }
+
+          return prev;
         },
       }),
   }),

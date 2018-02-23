@@ -16,7 +16,7 @@ const QuestionCard = ({
     _id, theAsker, theResponder, text, answer, answerDate, isLiked, likesCount,
   },
 }) => (
-  <div style={{ background: '#fff', marginBottom: 10, padding: 15 }}>
+  <div style={{ background: '#fff', marginBottom: 10, padding: 15, textAlign: 'left' }}>
     <div style={styles.flex}>
       <h2 style={{ paddingRight: 5 }}>{text}</h2>
       <Link
