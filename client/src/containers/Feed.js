@@ -82,9 +82,6 @@ export default graphql(GetQestionsQuery, {
             return prev;
           }
           const newQuestion = subscriptionData.data.questionAsnwered;
-          console.log(subscriptionData, 'SUB DATA');
-          console.log(newQuestion, 'NEW');
-          console.log(prev, 'PREV');
 
           if (!prev.getQuestions.find(q => q._id === newQuestion._id)) {
             return {
