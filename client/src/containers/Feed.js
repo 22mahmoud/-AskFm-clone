@@ -1,43 +1,31 @@
 import React from 'react';
-import { withApollo } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import { Spin } from 'antd';
 
 import Container from '../components/Container';
-import { MeQuery } from '../graphql/queries';
 import Question from '../components/Question';
-import QuestionList from '../components/QuestionsList/QuestionsList';
+import QuestionCard from '../components/QuestionsList/QuestionCard';
+import { GetQestionsQuery } from '../graphql/queries';
+import { QuestionLikedSubscriptions } from '../graphql/subscriptions';
 
 class Feed extends React.Component {
-  state = {
-    loading: true,
-    user: null,
-  };
-
   componentWillMount() {
-    this.getUser();
+    this.props.subscribeToQuestionliked();
   }
 
-  getUser = async () => {
-    this.setState({
-      loading: true,
-    });
-    const { data: { me: { isOk, user } } } = await this.props.client.query({
-      query: MeQuery,
-    });
-
-    if (!isOk) {
-      return;
-    }
-
-    this.setState({
-      loading: false,
-      user,
-    });
-  };
-
   render() {
-    const { loading, user } = this.state;
+    const { questions: { loading, getQuestions = [] } } = this.props;
     if (loading) {
-      return null;
+      return (
+        <Spin
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 15,
+          }}
+        />
+      );
     }
 
     return (
@@ -51,12 +39,37 @@ class Feed extends React.Component {
             padding: '5 0',
             borderRadius: 2,
           }}
-        >
-          <QuestionList />
-        </div>
+        />
+        {getQuestions.map(q => <QuestionCard key={q._id} question={q} />)}
       </Container>
     );
   }
 }
 
-export default withApollo(Feed);
+export default graphql(GetQestionsQuery, {
+  name: 'questions',
+  props: props => ({
+    ...props,
+    subscribeToQuestionliked: () =>
+      props.questions.subscribeToMore({
+        document: QuestionLikedSubscriptions,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) {
+            return prev;
+          }
+          const newQuestion = subscriptionData.data.questionLiked;
+
+          return {
+            ...prev,
+            getQuestions: prev.getQuestions.map(q =>
+              (q._id === newQuestion._id
+                ? {
+                  ...q,
+                  favoriteCount: newQuestion.likesCount,
+                }
+                : q)),
+          };
+        },
+      }),
+  }),
+})(Feed);

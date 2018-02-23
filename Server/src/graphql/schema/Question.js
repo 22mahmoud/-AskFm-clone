@@ -25,6 +25,7 @@ export default `
     type Query {
         getQuestions: [Question]
         getMyNotAnswerdQuestions: [Question]
+        getUserAnsweredQuestions(username: String!): [Question]
         getMyNotAnsweredQuestion(questionID: ID!): QuestionResponse
     }
 

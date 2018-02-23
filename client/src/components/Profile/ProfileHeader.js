@@ -1,7 +1,6 @@
 import React from 'react';
 
 import BG from '../../assets/images/bg.png';
-import PP from '../../assets/images/PP.jpg';
 
 const ProfileHeader = ({ username }) => (
   <header
@@ -26,7 +25,7 @@ const ProfileHeader = ({ username }) => (
       }}
     />
     <img
-      src={PP}
+      src={`http://i.pravatar.cc/150?u=${username}`}
       alt="profile_picture"
       style={{
         zIndex: 5,

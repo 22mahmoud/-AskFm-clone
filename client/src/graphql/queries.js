@@ -76,6 +76,28 @@ export const GetMyNotAnsweredQuestionQuery = gql`
   }
 `;
 
+export const GetUserAnsweredQuestionsQuery = gql`
+  query($username: String!) {
+    getUserAnsweredQuestions(username: $username) {
+      _id
+      text
+      isLiked
+      likesCount
+      theAsker {
+        _id
+        username
+      }
+      theResponder {
+        _id
+        username
+      }
+      answer
+      createdAt
+      answerDate
+    }
+  }
+`;
+
 export const GetUserByUsernameQuery = gql`
   query($username: String!) {
     getUserByUsername(username: $username) {

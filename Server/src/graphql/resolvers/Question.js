@@ -10,6 +10,23 @@ import { pubsub } from '../../config/pubsub';
 export const QUESTION_LIKED = 'questionLiked';
 export const QUESTION_SENDED = 'questionSended';
 
+const getQuestionsFn = (questions, likes) =>
+  questions.reduce((arr, question) => {
+    const qs = question.toJSON();
+    if (likes.questions.some(q => q.equals(question._id))) {
+      arr.push({
+        ...qs,
+        isLiked: true,
+      });
+    } else {
+      arr.push({
+        ...qs,
+        isLiked: false,
+      });
+    }
+    return arr;
+  }, []);
+
 export default {
   Question: {
     theAsker: ({ theAsker }) => User.findById(theAsker),
@@ -24,22 +41,22 @@ export default {
         const p1 = Question.find({ answer: { $exists: true } }).sort({ createdAt: -1 });
         const p2 = LikeQuestion.findOne({ userId: user._id });
         const [questions, likes] = await Promise.all([p1, p2]);
-        const QuestionsToSend = questions.reduce((arr, question) => {
-          const qs = question.toJSON();
-          if (likes.questions.some(q => q.equals(question._id))) {
-            arr.push({
-              ...qs,
-              isLiked: true,
-            });
-          } else {
-            arr.push({
-              ...qs,
-              isLiked: false,
-            });
-          }
-          return arr;
-        }, []);
-
+        const QuestionsToSend = getQuestionsFn(questions, likes);
+        return QuestionsToSend;
+      } catch (error) {
+        throw error;
+      }
+    },
+    getUserAnsweredQuestions: async (_, { username }, { user }) => {
+      try {
+        await requireUser(user);
+        const currUser = await User.findOne({ username });
+        const p1 = Question.find({ answer: { $exists: true }, theResponder: currUser._id }).sort({
+          createdAt: -1,
+        });
+        const p2 = LikeQuestion.findOne({ userId: user._id });
+        const [questions, likes] = await Promise.all([p1, p2]);
+        const QuestionsToSend = getQuestionsFn(questions, likes);
         return QuestionsToSend;
       } catch (error) {
         throw error;

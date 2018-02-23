@@ -1,6 +1,7 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
-import { Row, Col } from 'antd';
+import { graphql, compose } from 'react-apollo';
+import { Row, Col, Spin } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 import {
   ProfileAbout as About,
@@ -8,37 +9,99 @@ import {
   ProfileHeader as Header,
 } from '../components/Profile';
 import Question from '../components/Question';
-import { GetUserByUsernameQuery } from '../graphql/queries';
+import QuestionCard from '../components/QuestionsList/QuestionCard';
 
-const Profile = ({ data: { loading, getUserByUsername = {} } }) => {
-  if (loading) {
-    return null;
+import { GetUserByUsernameQuery, GetUserAnsweredQuestionsQuery } from '../graphql/queries';
+import { QuestionLikedSubscriptions } from '../graphql/subscriptions';
+
+class Profile extends React.Component {
+  componentWillMount() {
+    this.props.subscribeToQuestionliked();
   }
-  const { username, _id } = getUserByUsername;
-  return (
-    <div>
-      <Row type="flex" justify="center" align="middle" style={{ textAlign: 'center' }}>
-        <Col span={18}>
-          <Header username={username} />
-        </Col>
-      </Row>
-      <Row type="flex" justify="center" style={{ textAlign: 'center' }}>
-        <Col span={8}>
-          <h1 style={{ color: '#fff' }}>
-            <Question userToAsk={_id} />
-          </h1>
-        </Col>
-        <Col span={8}>
-          <Stats />
-          <About />
-        </Col>
-      </Row>
-    </div>
-  );
-};
+  render() {
+    const {
+      data: { loading, getUserByUsername = {} },
+      answerdQuestions: { loading: L, getUserAnsweredQuestions = [] },
+    } = this.props;
+    if (loading || L) {
+      return (
+        <Spin
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 15,
+          }}
+        />
+      );
+    }
+    const { username, _id } = getUserByUsername;
+    if (!getUserByUsername) {
+      return <Redirect to={{ pathname: '/feed' }} />;
+    }
 
-export default graphql(GetUserByUsernameQuery, {
-  options: ({ match: { params: { username } } }) => ({
-    variables: { username },
+    return (
+      <div>
+        <Row type="flex" justify="center" align="middle" style={{ textAlign: 'center' }}>
+          <Col span={18}>
+            <Header username={username} />
+          </Col>
+        </Row>
+        <Row type="flex" justify="center" style={{ textAlign: 'center' }}>
+          <Col span={8}>
+            <Question userToAsk={_id} />
+            <div
+              style={{
+                textAlign: 'left',
+                background: 'rgb(205, 205, 217)',
+                marginTop: 15,
+                color: '#000',
+                padding: '5 0',
+                borderRadius: 2,
+              }}
+            />
+            {getUserAnsweredQuestions.map(q => <QuestionCard key={q._id} question={q} />)}
+          </Col>
+          <Col span={8}>
+            <Stats />
+            <About />
+          </Col>
+        </Row>
+      </div>
+    );
+  }
+}
+
+export default compose(
+  graphql(GetUserByUsernameQuery, {
+    options: ({ match: { params: { username } } }) => ({ variables: { username } }),
   }),
-})(Profile);
+  graphql(GetUserAnsweredQuestionsQuery, {
+    name: 'answerdQuestions',
+    options: ({ match: { params: { username } } }) => ({ variables: { username } }),
+    props: props => ({
+      ...props,
+      subscribeToQuestionliked: () =>
+        props.answerdQuestions.subscribeToMore({
+          document: QuestionLikedSubscriptions,
+          updateQuery: (prev, { subscriptionData }) => {
+            if (!subscriptionData.data) {
+              return prev;
+            }
+            const newQuestion = subscriptionData.data.questionLiked;
+
+            return {
+              ...prev,
+              getUserAnsweredQuestions: prev.getUserAnsweredQuestions.map(q =>
+                (q._id === newQuestion._id
+                  ? {
+                    ...q,
+                    favoriteCount: newQuestion.likesCount,
+                  }
+                  : q)),
+            };
+          },
+        }),
+    }),
+  }),
+)(Profile);

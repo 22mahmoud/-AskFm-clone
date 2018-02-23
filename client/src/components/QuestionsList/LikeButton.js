@@ -23,7 +23,7 @@ const LikeButton = ({ likesCount, isLiked, like }) => (
         color: !isLiked ? 'rgb(205, 205, 217)' : '#FF643C',
       }}
     />
-    <p> {likesCount} </p>
+    <p style={{ color: '#000' }}> {likesCount} </p>
   </div>
 );
 
