@@ -3,7 +3,9 @@ import { withRouter, Link } from 'react-router-dom';
 import { Icon } from 'antd';
 import { connect } from 'react-redux';
 
-const HeaderContent = ({ isAuth, history, location: { pathname } }) => {
+const HeaderContent = ({
+  isAuth, user, history, location: { pathname },
+}) => {
   if (!isAuth) {
     return (
       <Link to="/" style={{ textDecoration: 'none', textAlign: 'center' }}>
@@ -47,7 +49,7 @@ const HeaderContent = ({ isAuth, history, location: { pathname } }) => {
           }}
         />
         <Icon
-          onClick={() => history.push('/u/22mahmoud')}
+          onClick={() => history.push(`/u/${user.username}`)}
           type="user"
           style={{
             fontSize: 25,
@@ -61,4 +63,4 @@ const HeaderContent = ({ isAuth, history, location: { pathname } }) => {
   );
 };
 
-export default withRouter(connect(({ user: { isAuth } }) => ({ isAuth }))(HeaderContent));
+export default withRouter(connect(({ user: { isAuth, user } }) => ({ isAuth, user }))(HeaderContent));

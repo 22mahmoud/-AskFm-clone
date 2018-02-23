@@ -27,11 +27,11 @@ class AnswerQuestion extends React.Component {
             answer: values.answer,
             id,
           },
-          update: (store, { data: { AnswerQuestion: AQ } }) => {
-            const data = store.readQuery({ query: GetQestionsQuery });
-            data.getQuestions.unshift(AQ.question);
-            store.writeQuery({ query: GetQestionsQuery, data });
-          },
+          // update: (store, { data: { AnswerQuestion: AQ } }) => {
+          //   const data = store.readQuery({ query: GetQestionsQuery });
+          //   data.getQuestions.unshift(AQ.question);
+          //   store.writeQuery({ query: GetQestionsQuery, data });
+          // },
         });
         if (response) {
           this.props.history.push('/feed');

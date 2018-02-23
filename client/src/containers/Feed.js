@@ -89,7 +89,6 @@ export default graphql(GetQestionsQuery, {
               getQuestions: [{ ...newQuestion }, ...prev.getQuestions],
             };
           }
-
           return prev;
         },
       }),

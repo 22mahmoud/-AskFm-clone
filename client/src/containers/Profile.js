@@ -35,10 +35,11 @@ class Profile extends React.Component {
         />
       );
     }
-    const { username, _id } = getUserByUsername;
+
     if (!getUserByUsername) {
       return <Redirect to={{ pathname: '/feed' }} />;
     }
+    const { username, _id } = getUserByUsername;
 
     return (
       <div>
