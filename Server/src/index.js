@@ -77,12 +77,19 @@ graphQlServer.listen(constants.PORT, (err) => {
         execute,
         subscribe,
         schema,
-        async onConnect({ token }) {
-          if (!token) {
-            return {};
+        // onConnect: (connectionParams, webSocket) =>
+        //   console.log(connectionParams, 'PARAMASSS') || { user: 'me' },
+        onConnect: async ({ token }) => {
+          if (token) {
+            try {
+              const user = await decodeToken(token);
+              if (user) {
+                return { user };
+              }
+            } catch (error) {
+              return { user: null };
+            }
           }
-          const user = await decodeToken(token);
-          return { user };
         },
       },
       {

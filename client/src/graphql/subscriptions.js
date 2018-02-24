@@ -31,4 +31,24 @@ export const QuestionAsnweredSubscriptions = gql`
   }
 `;
 
-export const wowaa = '';
+export const NewQuestionSendedSubscriptions = gql`
+  subscription {
+    newQuestionSended {
+      _id
+      text
+      isLiked
+      likesCount
+      theAsker {
+        _id
+        username
+      }
+      theResponder {
+        _id
+        username
+      }
+      answer
+      createdAt
+      answerDate
+    }
+  }
+`;

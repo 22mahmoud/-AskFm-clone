@@ -17,10 +17,14 @@ import store from './store';
 import registerServiceWorker from './registerServiceWorker';
 import { login } from './actions';
 
+const isToken = localStorage.getItem('token');
 const wsLink = new WebSocketLink({
   uri: 'ws://localhost:3030/subscriptions',
   options: {
     reconnect: true,
+    connectionParams: () => ({
+      token: isToken,
+    }),
   },
 });
 
@@ -28,7 +32,6 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:3030/graphql',
 });
 
-const isToken = localStorage.getItem('token');
 if (isToken) {
   store.dispatch(login());
 }

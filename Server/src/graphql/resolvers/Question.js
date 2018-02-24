@@ -8,7 +8,8 @@ import { requireUser } from '../../services/auth';
 import { pubsub } from '../../config/pubsub';
 
 export const QUESTION_LIKED = 'questionLiked';
-export const QUESTION_SENDED = 'questionSended';
+const QUESTION_ANSWERED = 'questionAsnwered';
+const QUESTION_SENDED = 'questionSended';
 
 const getQuestionsFn = (questions, likes) =>
   questions.reduce((arr, question) => {
@@ -108,7 +109,8 @@ export default {
           theAsker: user._id,
         });
 
-        pubsub.publish(QUESTION_SENDED, { [QUESTION_SENDED]: { ...question } });
+        const q = question.toJSON();
+        pubsub.publish(QUESTION_SENDED, { [QUESTION_SENDED]: { ...q } });
 
         return {
           question,
@@ -136,6 +138,8 @@ export default {
         question.answer = answer;
         question.answerDate = new Date().getTime();
         await question.save();
+        const q = question.toJSON();
+        pubsub.publish(QUESTION_ANSWERED, { [QUESTION_ANSWERED]: { ...q } });
 
         return {
           question,
@@ -192,10 +196,16 @@ export default {
     questionLiked: {
       subscribe: () => pubsub.asyncIterator(QUESTION_LIKED),
     },
-    questionSended: {
+
+    questionAsnwered: {
+      subscribe: () => pubsub.asyncIterator(QUESTION_ANSWERED),
+    },
+
+    newQuestionSended: {
       subscribe: withFilter(
         () => pubsub.asyncIterator(QUESTION_SENDED),
-        (payload, variables) => console.log(payload, ' => payload ', variables, ' => vars') || true,
+        (payload, variables, { user }) =>
+          payload.questionSended.theResponder.toString() === user._id.toString(),
       ),
     },
   },

@@ -37,7 +37,8 @@ export default `
     }
     type Subscription {
         questionLiked: Question
-        questionSended: Question
+        questionAsnwered: Question
+        newQuestionSended: Question
     }
     
 

@@ -5,13 +5,14 @@ import { Spin } from 'antd';
 import Container from '../components/Container';
 import NotificationCard from '../components/NotificationsList/NotificationCard';
 import { GetMyNotAnswerdQuestionsQuery } from '../graphql/queries';
+import { NewQuestionSendedSubscriptions } from '../graphql/subscriptions';
 
 class Notifications extends React.Component {
   componentWillMount() {
-    // this.props.subscribeToQuestionSended();
+    this.props.subscribeToQuestionSended();
   }
   render() {
-    const { data: { loading, getMyNotAnswerdQuestions = [] } } = this.props;
+    const { questions: { loading, getMyNotAnswerdQuestions = [] } } = this.props;
     if (loading) {
       return (
         <Spin
@@ -46,4 +47,26 @@ class Notifications extends React.Component {
 
 export default graphql(GetMyNotAnswerdQuestionsQuery, {
   options: { fetchPolicy: 'cache-and-network' },
+  name: 'questions',
+  props: props => ({
+    ...props,
+    subscribeToQuestionSended: () =>
+      props.questions.subscribeToMore({
+        document: NewQuestionSendedSubscriptions,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) {
+            return prev;
+          }
+          const newQuestion = subscriptionData.data.newQuestionSended;
+          console.log(newQuestion, 'NEW QUESTION');
+          if (!prev.getMyNotAnswerdQuestions.find(q => q._id === newQuestion._id)) {
+            return {
+              ...prev,
+              getMyNotAnswerdQuestions: [{ ...newQuestion }, ...prev.getMyNotAnswerdQuestions],
+            };
+          }
+          return prev;
+        },
+      }),
+  }),
 })(Notifications);
