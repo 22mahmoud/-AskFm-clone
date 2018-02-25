@@ -40,7 +40,11 @@ class Question extends React.Component {
             theResponder: values.person || this.props.userToAsk,
           },
         });
-        console.log(response, 'SEND QUESTION'); // eslint-disable-line
+        if (response) {
+          this.props.form.resetFields('question');
+          this.props.form.resetFields('person');
+          this.setState({ loading: false });
+        }
         this.props.form.resetFields('question');
         this.props.form.resetFields('person');
         this.setState({ loading: false });

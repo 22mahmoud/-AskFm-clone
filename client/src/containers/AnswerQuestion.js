@@ -3,7 +3,7 @@ import { graphql, compose } from 'react-apollo';
 import { Spin, Form, Input, Icon, Button } from 'antd';
 import { Redirect } from 'react-router-dom';
 
-import { GetMyNotAnsweredQuestionQuery, GetQestionsQuery } from '../graphql/queries';
+import { GetMyNotAnsweredQuestionQuery } from '../graphql/queries';
 import { AnswerQuestionMutation } from '../graphql/mutations';
 import Container from '../components/Container';
 
@@ -27,11 +27,6 @@ class AnswerQuestion extends React.Component {
             answer: values.answer,
             id,
           },
-          // update: (store, { data: { AnswerQuestion: AQ } }) => {
-          //   const data = store.readQuery({ query: GetQestionsQuery });
-          //   data.getQuestions.unshift(AQ.question);
-          //   store.writeQuery({ query: GetQestionsQuery, data });
-          // },
         });
         if (response) {
           this.props.history.push('/feed');

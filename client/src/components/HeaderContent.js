@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Icon } from 'antd';
 import { connect } from 'react-redux';
+import { withApollo } from 'react-apollo';
 
 const HeaderContent = ({
   isAuth, user, history, location: { pathname },
@@ -13,7 +14,6 @@ const HeaderContent = ({
       </Link>
     );
   }
-
   return (
     <div
       style={{
@@ -63,4 +63,4 @@ const HeaderContent = ({
   );
 };
 
-export default withRouter(connect(({ user: { isAuth, user } }) => ({ isAuth, user }))(HeaderContent));
+export default withRouter(withApollo(connect(({ user: { isAuth, user } }) => ({ isAuth, user }))(HeaderContent)));

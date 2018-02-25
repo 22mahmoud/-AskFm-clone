@@ -27,7 +27,6 @@ class Route extends React.Component {
     const {
       component: C, privateRoute, isAuth, ...rest
     } = this.props;
-    console.log(this.props, 'PROPS');
     if (privateRoute) {
       return (
         <R

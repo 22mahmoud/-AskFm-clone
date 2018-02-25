@@ -23,7 +23,7 @@ class Profile extends React.Component {
       data: { loading, getUserByUsername = {} },
       answerdQuestions: { loading: L, getUserAnsweredQuestions = [] },
     } = this.props;
-    if (loading || L) {
+    if (loading && L) {
       return (
         <Spin
           style={{
@@ -39,18 +39,17 @@ class Profile extends React.Component {
     if (!getUserByUsername) {
       return <Redirect to={{ pathname: '/feed' }} />;
     }
-    const { username, _id } = getUserByUsername;
 
     return (
       <div>
         <Row type="flex" justify="center" align="middle" style={{ textAlign: 'center' }}>
           <Col span={18}>
-            <Header username={username} />
+            <Header username={getUserByUsername.username} />
           </Col>
         </Row>
         <Row type="flex" justify="center" style={{ textAlign: 'center' }}>
           <Col span={8}>
-            <Question userToAsk={_id} />
+            <Question userToAsk={getUserByUsername._id} />
             <div
               style={{
                 textAlign: 'left',

@@ -9,7 +9,7 @@ import { pubsub } from '../../config/pubsub';
 
 export const QUESTION_LIKED = 'questionLiked';
 const QUESTION_ANSWERED = 'questionAsnwered';
-const QUESTION_SENDED = 'questionSended';
+const QUESTION_SENDED = 'newQuestionSended';
 
 const getQuestionsFn = (questions, likes) =>
   questions.reduce((arr, question) => {
@@ -205,7 +205,7 @@ export default {
       subscribe: withFilter(
         () => pubsub.asyncIterator(QUESTION_SENDED),
         (payload, variables, { user }) =>
-          payload.questionSended.theResponder.toString() === user._id.toString(),
+          payload.newQuestionSended.theResponder.toString() === user._id.toString(),
       ),
     },
   },

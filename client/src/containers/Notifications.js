@@ -29,16 +29,20 @@ class Notifications extends React.Component {
     return (
       <Container>
         <div style={{ background: '#fff', padding: 20, borderRadius: 5 }}>
-          {getMyNotAnswerdQuestions.map(n => (
-            <NotificationCard
-              key={n._id}
-              id={n._id}
-              text={n.text}
-              username={n.theAsker.username}
-              userId={n.theAsker._id}
-              createdAt={n.createdAt}
-            />
-          ))}
+          {getMyNotAnswerdQuestions.length === 0 ? (
+            <h3 style={{ textAlign: 'center' }}> No Notifications ! </h3>
+          ) : (
+            getMyNotAnswerdQuestions.map(n => (
+              <NotificationCard
+                key={n._id}
+                id={n._id}
+                text={n.text}
+                username={n.theAsker.username}
+                userId={n.theAsker._id}
+                createdAt={n.createdAt}
+              />
+            ))
+          )}
         </div>
       </Container>
     );
@@ -58,7 +62,6 @@ export default graphql(GetMyNotAnswerdQuestionsQuery, {
             return prev;
           }
           const newQuestion = subscriptionData.data.newQuestionSended;
-          console.log(newQuestion, 'NEW QUESTION');
           if (!prev.getMyNotAnswerdQuestions.find(q => q._id === newQuestion._id)) {
             return {
               ...prev,
