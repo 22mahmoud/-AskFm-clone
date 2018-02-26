@@ -49,12 +49,19 @@ export default `
         user: User
         isOk: Boolean!
     }
+
+    type TotalResponse {
+        total: Int
+    }
+
     type Query {
         getUser(email: String!): User
         getUserByUsername(username: String!): User
         getUsers: [User]
         getNearby: [User]
         me: MeResponse
+        getTotalPosts(username: String): TotalResponse
+        getTotalLikes(username: String): TotalResponse
     } 
 
     type Mutation {

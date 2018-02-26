@@ -1,11 +1,13 @@
 import React from 'react';
-import { graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import { Spin } from 'antd';
+import { connect } from 'react-redux';
 
 import Container from '../components/Container';
 import NotificationCard from '../components/NotificationsList/NotificationCard';
 import { GetMyNotAnswerdQuestionsQuery } from '../graphql/queries';
 import { NewQuestionSendedSubscriptions } from '../graphql/subscriptions';
+import { notify, resetNotifications } from '../actions';
 
 class Notifications extends React.Component {
   componentWillMount() {
@@ -49,27 +51,33 @@ class Notifications extends React.Component {
   }
 }
 
-export default graphql(GetMyNotAnswerdQuestionsQuery, {
-  options: { fetchPolicy: 'cache-and-network' },
-  name: 'questions',
-  props: props => ({
-    ...props,
-    subscribeToQuestionSended: () =>
-      props.questions.subscribeToMore({
-        document: NewQuestionSendedSubscriptions,
-        updateQuery: (prev, { subscriptionData }) => {
-          if (!subscriptionData.data) {
+export default compose(
+  connect(undefined, { resetNotifications, notify }),
+  graphql(GetMyNotAnswerdQuestionsQuery, {
+    options: { fetchPolicy: 'cache-and-network' },
+    name: 'questions',
+    props: props => ({
+      ...props,
+      subscribeToQuestionSended: () =>
+        props.questions.subscribeToMore({
+          document: NewQuestionSendedSubscriptions,
+          updateQuery: (prev, { subscriptionData }) => {
+            if (!subscriptionData.data) {
+              props.ownProps.resetNotifications();
+              return prev;
+            }
+            const newQuestion = subscriptionData.data.newQuestionSended;
+            if (!prev.getMyNotAnswerdQuestions.find(q => q._id === newQuestion._id)) {
+              props.ownProps.notify();
+              return {
+                ...prev,
+                getMyNotAnswerdQuestions: [{ ...newQuestion }, ...prev.getMyNotAnswerdQuestions],
+              };
+            }
+            props.ownProps.resetNotifications();
             return prev;
-          }
-          const newQuestion = subscriptionData.data.newQuestionSended;
-          if (!prev.getMyNotAnswerdQuestions.find(q => q._id === newQuestion._id)) {
-            return {
-              ...prev,
-              getMyNotAnswerdQuestions: [{ ...newQuestion }, ...prev.getMyNotAnswerdQuestions],
-            };
-          }
-          return prev;
-        },
-      }),
+          },
+        }),
+    }),
   }),
-})(Notifications);
+)(Notifications);

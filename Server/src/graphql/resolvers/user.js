@@ -2,6 +2,7 @@ import FormatErrors from '../../FormatErrors';
 import User from '../../models/User';
 import { requireUser } from '../../services/auth';
 import LikeQuestion from '../../models/LikeQuestion';
+import Question from '../../models/Question';
 
 export default {
   User: {
@@ -58,6 +59,32 @@ export default {
           isOk: false,
           user: null,
         };
+      }
+    },
+    getTotalPosts: async (_, { username }, { user }) => {
+      try {
+        await requireUser(user);
+        const getUser = await User.findOne({ username });
+        const totalPosts = await Question.find({ answer: { $exists: true } })
+          .where('theResponder', getUser._id)
+          .count();
+        return {
+          total: totalPosts,
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
+    getTotalLikes: async (_, { username }, { user }) => {
+      try {
+        await requireUser(user);
+        const getUser = await User.findOne({ username });
+        // const totalLikes = await LikeQuestion.find({  })
+        return {
+          total: totalPosts,
+        };
+      } catch (error) {
+        throw error;
       }
     },
   },

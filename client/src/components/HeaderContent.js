@@ -1,8 +1,7 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { Icon } from 'antd';
+import { Icon, Badge } from 'antd';
 import { connect } from 'react-redux';
-import { withApollo } from 'react-apollo';
 
 const HeaderContent = ({
   isAuth, user, history, location: { pathname },
@@ -38,16 +37,27 @@ const HeaderContent = ({
             color: pathname === '/feed' || 'rgba(255,255,255,0.5)',
           }}
         />
-        <Icon
+        <Badge
+          count={10}
           onClick={() => history.push('/notifications')}
-          type="notification"
           style={{
-            fontSize: 25,
             cursor: 'pointer',
-            marginLeft: 25,
-            color: pathname === '/notifications' || 'rgba(255,255,255,0.5)',
+            backgroundColor: '#fff',
+            color: '#999',
+            boxShadow: '0 0 0 1px #d9d9d9 inset',
           }}
-        />
+        >
+          <Icon
+            onClick={() => history.push('/notifications')}
+            type="notification"
+            style={{
+              fontSize: 25,
+              cursor: 'pointer',
+              marginLeft: 25,
+              color: pathname === '/notifications' ? '#FF643C' : 'rgba(255,255,255,0.5)',
+            }}
+          />
+        </Badge>
         <Icon
           onClick={() => history.push(`/u/${user.username}`)}
           type="user"
@@ -63,4 +73,5 @@ const HeaderContent = ({
   );
 };
 
-export default withRouter(withApollo(connect(({ user: { isAuth, user } }) => ({ isAuth, user }))(HeaderContent)));
+const HC = withRouter(connect(({ user: { isAuth, user } }) => ({ isAuth, user }))(HeaderContent));
+export default HC;

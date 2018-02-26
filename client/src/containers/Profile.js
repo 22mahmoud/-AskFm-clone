@@ -48,7 +48,11 @@ class Profile extends React.Component {
           </Col>
         </Row>
         <Row type="flex" justify="center" style={{ textAlign: 'center' }}>
-          <Col span={8}>
+          <Col xs={22} sm={22} md={20} lg={10} xl={{ order: 2, span: 8 }}>
+            <Stats />
+            <About />
+          </Col>
+          <Col xs={22} sm={22} md={20} lg={10} xl={{ order: 1, span: 8 }}>
             <Question userToAsk={getUserByUsername._id} />
             <div
               style={{
@@ -61,10 +65,6 @@ class Profile extends React.Component {
               }}
             />
             {getUserAnsweredQuestions.map(q => <QuestionCard key={q._id} question={q} />)}
-          </Col>
-          <Col span={8}>
-            <Stats />
-            <About />
           </Col>
         </Row>
       </div>
