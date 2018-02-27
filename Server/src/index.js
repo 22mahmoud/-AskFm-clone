@@ -15,6 +15,7 @@ import './config/db';
 import { decodeToken } from './services/auth';
 
 const app = express();
+require('dotenv').config();
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
 

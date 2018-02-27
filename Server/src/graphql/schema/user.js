@@ -45,6 +45,13 @@ export default `
         token: String
         errors: [Error]
     }
+  
+    type ChangeInfoRespone {
+        isOk: Boolean!
+        user: User
+        token: String
+        errors: [Error]
+    }
     type MeResponse {
         user: User
         isOk: Boolean!
@@ -69,5 +76,7 @@ export default `
         addLocation(loc: LocationInput): Me!
         login(email: String!, password: String!): LoginResponse
         Togglefollow(userID: ID!): User
+        changeInfo(username: String!, email: String!, bio: String!): ChangeInfoRespone
+        changePassword(currentPassword: String!, newPassword: String!): ChangeInfoRespone
     }
 `;

@@ -187,5 +187,84 @@ export default {
         throw error;
       }
     },
+    changePassword: async (_, { currentPassword, newPassword }, { user }) => {
+      try {
+        await requireUser(user);
+
+        if (!user.authUser(password)) {
+          throw new Error(
+            JSON.stringify({
+              path: 'password',
+              message: 'password not valid',
+            }),
+            'currentPassword',
+          );
+        }
+        const currUser = await User.findOne({ _id: user._id });
+        currUser.password = newPassword;
+        await currUser.save();
+        return {
+          isOk: true,
+          token: currUser.createToken(),
+          user: currUser,
+        };
+      } catch (error) {
+        const errors = [];
+        error.message && errors.push(JSON.parse(error.message));
+        return {
+          isOk: false,
+          errors: errors || FormatErrors(error),
+        };
+      }
+    },
+    changeInfo: async (_, { bio, username, email }, { user }) => {
+      try {
+        await requireUser(user);
+        const p1 = User.findOne({ email })
+          .where('_id')
+          .ne(user._id);
+        const p2 = User.findOne({ username })
+          .where('_id')
+          .ne(user._id);
+        const [isEmail, isUsername] = await Promise.all([p1, p2]);
+
+        if (isEmail) {
+          throw new Error(
+            JSON.stringify({
+              path: 'email',
+              message: 'email already exist',
+            }),
+            'email',
+          );
+        }
+        if (isUsername) {
+          throw new Error(
+            JSON.stringify({
+              path: 'username',
+              message: 'username already exist',
+            }),
+            'username',
+          );
+        }
+        const currUser = await User.findOne({ _id: user._id });
+        currUser.username = username;
+        currUser.email = email;
+        await currUser.save();
+        console.log(currUser, 'Current User');
+
+        return {
+          isOk: true,
+          token: currUser.createToken(),
+          user: currUser,
+        };
+      } catch (error) {
+        const errors = [];
+        error.message && errors.push(JSON.parse(error.message));
+        return {
+          isOk: false,
+          errors: errors || FormatErrors(error),
+        };
+      }
+    },
   },
 };
