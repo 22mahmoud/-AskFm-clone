@@ -8,6 +8,7 @@ import Login from './Login';
 import SignUp from './SignUp';
 import Feed from './Feed';
 import Profile from './Profile';
+import Settings from './Settings';
 import AnswerQuestion from '../containers/AnswerQuestion';
 import Notifications from './Notifications';
 import HeaderContent from '../components/HeaderContent';
@@ -35,6 +36,7 @@ const App = () => (
         <Route privateRoute exact path="/notifications" component={Notifications} />
         <Route privateRoute exact path="/q/:id" component={AnswerQuestion} />
         <Route privateRoute exact path="/u/:username" component={Profile} />
+        <Route privateRoute exact path="/settings" component={Settings} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/login" component={Login} />
       </Switch>

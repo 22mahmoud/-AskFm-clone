@@ -12,7 +12,7 @@ function handleMenuClick({ e, history, logOut: logout }) {
       history.push('/settings');
       break;
     case '1':
-    logout();
+      logout();
       history.push('/');
       break;
     default:
@@ -94,8 +94,22 @@ const HeaderContent = ({
           }
           trigger={['click']}
         >
-          <a className="ant-dropdown-link" href="#">
-            Click me <Icon type="down" />
+          <a href="#">
+            <Icon
+              type="setting"
+              style={{
+                fontSize: 25,
+                cursor: 'pointer',
+                marginLeft: 25,
+              }}
+            />
+            <Icon
+              type="down"
+              style={{
+                fontSize: 10,
+                cursor: 'pointer',
+              }}
+            />
           </a>
         </Dropdown>
       </div>
