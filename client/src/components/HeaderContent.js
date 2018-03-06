@@ -1,10 +1,27 @@
 import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { Icon, Badge } from 'antd';
+import { Icon, Badge, Menu, Dropdown } from 'antd';
 import { connect } from 'react-redux';
+import { logOut } from '../actions';
+
+function handleMenuClick({ e, history, logOut: logout }) {
+  const { key } = e;
+
+  switch (key) {
+    case '0':
+      history.push('/settings');
+      break;
+    case '1':
+    logout();
+      history.push('/');
+      break;
+    default:
+      break;
+  }
+}
 
 const HeaderContent = ({
-  isAuth, user, history, location: { pathname },
+  isAuth, user, history, location: { pathname }, logOut,
 }) => {
   if (!isAuth) {
     return (
@@ -68,10 +85,23 @@ const HeaderContent = ({
             color: pathname === '/user' || 'rgba(255,255,255,0.5)',
           }}
         />
+        <Dropdown
+          overlay={
+            <Menu onClick={e => handleMenuClick({ e, history, logOut })}>
+              <Menu.Item key="0">Settings</Menu.Item>
+              <Menu.Item key="1">logout</Menu.Item>
+            </Menu>
+          }
+          trigger={['click']}
+        >
+          <a className="ant-dropdown-link" href="#">
+            Click me <Icon type="down" />
+          </a>
+        </Dropdown>
       </div>
     </div>
   );
 };
 
-const HC = withRouter(connect(({ user: { isAuth, user } }) => ({ isAuth, user }))(HeaderContent));
+const HC = withRouter(connect(({ user: { isAuth, user } }) => ({ isAuth, user }), { logOut })(HeaderContent));
 export default HC;
