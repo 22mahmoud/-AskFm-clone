@@ -191,7 +191,7 @@ export default {
       try {
         await requireUser(user);
 
-        if (!user.authUser(password)) {
+        if (!user.authUser(currentPassword)) {
           throw new Error(
             JSON.stringify({
               path: 'password',
@@ -249,8 +249,8 @@ export default {
         const currUser = await User.findOne({ _id: user._id });
         currUser.username = username;
         currUser.email = email;
+        currUser.bio = bio;
         await currUser.save();
-        console.log(currUser, 'Current User');
 
         return {
           isOk: true,
