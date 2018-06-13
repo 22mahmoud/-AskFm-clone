@@ -2,11 +2,6 @@ import FormatErrors from '../../FormatErrors';
 import User from '../../models/User';
 import Question from '../../models/Question';
 import LikeQuestion from '../../models/LikeQuestion';
-import { pubsub } from '../../config/pubsub';
-
-export const QUESTION_LIKED = 'questionLiked';
-const QUESTION_ANSWERED = 'questionAsnwered';
-const QUESTION_SENDED = 'newQuestionSended';
 
 const getQuestionsFn = (questions, likes) =>
   questions.reduce((arr, question) => {
@@ -100,9 +95,6 @@ export default {
           theAsker: user._id,
         });
 
-        const q = question.toJSON();
-        pubsub.publish(QUESTION_SENDED, { [QUESTION_SENDED]: { ...q } });
-
         return {
           question,
           errors: null,
@@ -128,8 +120,6 @@ export default {
         question.answer = answer;
         question.answerDate = new Date().getTime();
         await question.save();
-        const q = question.toJSON();
-        pubsub.publish(QUESTION_ANSWERED, { [QUESTION_ANSWERED]: { ...q } });
 
         return {
           question,
@@ -181,22 +171,5 @@ export default {
         throw error;
       }
     },
-  },
-  Subscription: {
-    questionLiked: {
-      subscribe: () => pubsub.asyncIterator(QUESTION_LIKED),
-    },
-
-    questionAsnwered: {
-      subscribe: () => pubsub.asyncIterator(QUESTION_ANSWERED),
-    },
-
-    // newQuestionSended: {
-    //   subscribe: withFilter(
-    //     () => pubsub.asyncIterator(QUESTION_SENDED),
-    //     (payload, variables, { user }) =>
-    //       payload.newQuestionSended.theResponder.toString() === user._id.toString(),
-    //   ),
-    // },
   },
 };

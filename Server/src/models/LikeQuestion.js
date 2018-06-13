@@ -1,9 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import Question from './Question';
 
-import { pubsub } from '../config/pubsub';
-import { QUESTION_LIKED } from '../graphql/resolvers/Question';
-
 const LikeQuestionSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
@@ -26,7 +23,7 @@ LikeQuestionSchema.methods = {
 
         const question = await Question.decLikesCount(questionId);
         const q = question.toJSON();
-        pubsub.publish(QUESTION_LIKED, { [QUESTION_LIKED]: { ...q } });
+
         return {
           isLiked: false,
           ...q,
@@ -37,7 +34,7 @@ LikeQuestionSchema.methods = {
 
       this.questions.push(questionId);
       await this.save();
-      pubsub.publish(QUESTION_LIKED, { [QUESTION_LIKED]: { ...q } });
+
       return {
         isLiked: true,
         ...q,
