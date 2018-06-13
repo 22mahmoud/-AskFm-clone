@@ -44,6 +44,7 @@ export default `
         isOk: Boolean!
         token: String
         errors: [Error]
+        user: User
     }
   
     type ChangeInfoRespone {

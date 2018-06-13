@@ -15,7 +15,7 @@ import 'antd/dist/antd.css';
 import App from './containers/App';
 import store from './store';
 import registerServiceWorker from './registerServiceWorker';
-import { login } from './actions';
+import { login, setUser } from './actions';
 
 const isToken = localStorage.getItem('token');
 const wsLink = new WebSocketLink({
@@ -34,6 +34,10 @@ const httpLink = createHttpLink({
 
 if (isToken) {
   store.dispatch(login());
+}
+const userData = localStorage.getItem('user');
+if (userData) {
+  store.dispatch(setUser(JSON.parse(userData)));
 }
 
 const authLink = setContext((_, { headers }) => {

@@ -4,7 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux';
 
 import normalizeErrors from '../helpers/normalizeErrors';
-import { login } from '../actions';
+import { login, setUser } from '../actions';
 import { LoginMutation } from '../graphql/mutations';
 
 const FormItem = Form.Item;
@@ -15,17 +15,19 @@ class Login extends React.Component {
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    this.setState({ loading: true })
+    this.setState({ loading: true });
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        const { data: { login: { isOk, errors, token } } } = await this.props.mutate({
+        const { data: { login: { isOk, errors, token, user} } } = await this.props.mutate({
           variables: values,
         });
         if (isOk) {
           localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(user));
           this.props.login();
+          this.props.setUser(user);
           this.props.history.push('/feed');
-          this.setState({ loading: false })
+          this.setState({ loading: false });
         } else if (errors) {
           const errorsObj = normalizeErrors(errors);
 
@@ -43,14 +45,14 @@ class Login extends React.Component {
               },
             });
           });
-          this.setState({ loading: false })
+          this.setState({ loading: false });
         }
       }
     });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-     const { loading } = this.state;
+    const { loading } = this.state;
 
     return (
       <React.Fragment>
@@ -94,7 +96,12 @@ class Login extends React.Component {
                 />)}
               </FormItem>
               <FormItem>
-                <Button loading={!!loading} style={{ width: '100%' }} type="primary" htmlType="submit">
+                <Button
+                  loading={!!loading}
+                  style={{ width: '100%' }}
+                  type="primary"
+                  htmlType="submit"
+                >
                   Login
                 </Button>
               </FormItem>
@@ -106,4 +113,8 @@ class Login extends React.Component {
   }
 }
 
-export default compose(graphql(LoginMutation), connect(undefined, { login }), Form.create())(Login);
+export default compose(
+  graphql(LoginMutation),
+  connect(undefined, { login, setUser }),
+  Form.create(),
+)(Login);

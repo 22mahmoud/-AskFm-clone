@@ -139,6 +139,7 @@ export default {
         return {
           isOk: true,
           token: user.createToken(),
+          user,
         };
       } catch (error) {
         const errors = [];

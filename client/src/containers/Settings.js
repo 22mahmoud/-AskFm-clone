@@ -7,13 +7,50 @@ import Container from '../components/Container';
 const FormItem = Form.Item;
 
 class Settings extends React.Component {
-  state = {};
+  state = {
+    loading: false,
+  };
   componentDidMount() {
     const { form: { setFieldsValue }, user } = this.props;
     setFieldsValue({
-      username: 'FWOWO',
+      username: user.username,
+      email: user.email,
     });
   }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.setState({ loading: true });
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
+      if (!err) {
+        const {
+          data: {
+            login: {
+              isOk, errors, token, user,
+            },
+          },
+        } = await this.props.mutate({
+          variables: values,
+        });
+        if (isOk) {
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(user));
+          this.props.login();
+          this.props.setUser(user);
+          this.props.history.push('/feed');
+          this.setState({ loading: false });
+        } else if (errors) {
+          this.props.form.setFields({
+            email: {
+              value: '',
+              errors: [],
+            },
+          });
+        }
+      }
+    });
+  };
+
   render() {
     const { form: { getFieldDecorator }, user } = this.props;
     console.log(user, 'USer');

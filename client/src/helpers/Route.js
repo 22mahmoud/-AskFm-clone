@@ -7,58 +7,40 @@ import { MeQuery } from '../graphql/queries';
 
 import { logOut, setUser } from '../actions';
 
-class Route extends React.Component {
-  state = {};
-  componentWillMount() {
-    this.fetchUser();
-  }
-
-  fetchUser = async () => {
-    const { data: { me: { isOk, user } } } = await this.props.client.query({
-      query: MeQuery,
-    });
-    if (!isOk) {
-      this.props.logOut();
-    }
-    this.props.setUser(user);
-  };
-
-  render() {
-    const {
-      component: C, privateRoute, isAuth, ...rest
-    } = this.props;
-    if (privateRoute) {
-      return (
-        <R
-          {...rest}
-          render={props =>
-            (isAuth ? (
-              <C {...props} />
-            ) : (
-              <Redirect
-                to={{
-                  pathname: '/',
-                  state: { from: rest.location },
-                }}
-              />
-            ))
-          }
-        />
-      );
-    }
+const Route = ({
+  component: C, privateRoute, isAuth, ...rest
+}) => {
+  if (privateRoute) {
     return (
       <R
         {...rest}
         render={props =>
-          (!isAuth ? (
+          (isAuth ? (
             <C {...props} />
           ) : (
-            <Redirect to={{ pathname: '/feed', state: { from: rest.location } }} />
+            <Redirect
+              to={{
+                pathname: '/',
+                state: { from: rest.location },
+              }}
+            />
           ))
         }
       />
     );
   }
-}
+  return (
+    <R
+      {...rest}
+      render={props =>
+        (!isAuth ? (
+          <C {...props} />
+        ) : (
+          <Redirect to={{ pathname: '/feed', state: { from: rest.location } }} />
+        ))
+      }
+    />
+  );
+};
 
-export default withApollo(connect(({ user: { isAuth } }) => ({ isAuth }), { logOut, setUser })(Route));
+export default withApollo(connect(({ user: { isAuth } }) => ({ isAuth }))(Route));

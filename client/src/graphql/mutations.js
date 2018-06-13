@@ -4,6 +4,10 @@ export const LoginMutation = gql`
   mutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       isOk
+      user {
+        username
+        email
+      }
       token
       errors {
         path
