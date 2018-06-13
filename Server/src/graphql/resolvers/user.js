@@ -1,6 +1,5 @@
 import FormatErrors from '../../FormatErrors';
 import User from '../../models/User';
-import { requireUser } from '../../services/auth';
 import LikeQuestion from '../../models/LikeQuestion';
 import Question from '../../models/Question';
 
@@ -14,8 +13,7 @@ export default {
     following: ({ following }) => following.map(f => User.findById(f)),
   },
   Query: {
-    getUsers: async (_, args, { user }) => {
-      await requireUser(user);
+    getUsers: async () => {
       try {
         const users = await User.find({});
         return users;
@@ -23,9 +21,8 @@ export default {
         throw error;
       }
     },
-    getUserByUsername: async (_, { username }, { user }) => {
+    getUserByUsername: async (_, { username }) => {
       try {
-        await requireUser(user);
         return await User.findOne({ username });
       } catch (error) {
         throw error;
@@ -41,8 +38,7 @@ export default {
     },
     me: async (_, args, { user }) => {
       try {
-        const me = await requireUser(user);
-        if (!me) {
+        if (!user) {
           return {
             isOk: false,
             user: null,
@@ -51,7 +47,7 @@ export default {
 
         return {
           isOk: true,
-          user: me,
+          user,
         };
       } catch (error) {
         console.log(error);
@@ -61,9 +57,8 @@ export default {
         };
       }
     },
-    getTotalPosts: async (_, { username }, { user }) => {
+    getTotalPosts: async (_, { username }) => {
       try {
-        await requireUser(user);
         const getUser = await User.findOne({ username });
         const totalPosts = await Question.find({ answer: { $exists: true } })
           .where('theResponder', getUser._id)
@@ -75,18 +70,17 @@ export default {
         throw error;
       }
     },
-    getTotalLikes: async (_, { username }, { user }) => {
-      try {
-        await requireUser(user);
-        const getUser = await User.findOne({ username });
-        // const totalLikes = await LikeQuestion.find({  })
-        return {
-          total: totalPosts,
-        };
-      } catch (error) {
-        throw error;
-      }
-    },
+    // getTotalLikes: async (_, { username }, { user }) => {
+    //   try {
+    //     const getUser = await User.findOne({ username });
+    //     // const totalLikes = await LikeQuestion.find({  })
+    //     return {
+    //       total: totalPosts,
+    //     };
+    //   } catch (error) {
+    //     throw error;
+    //   }
+    // },
   },
 
   Mutation: {
@@ -154,7 +148,6 @@ export default {
       try {
         // console.log(type, coordinates);
 
-        await requireUser(user);
         const updatedUser = await User.findByIdAndUpdate(
           user._id,
           {
@@ -169,18 +162,17 @@ export default {
     },
     Togglefollow: async (_, { userID }, { user }) => {
       try {
-        const me = await requireUser(user);
         const userToFollow = await User.findById(userID);
-        if (!userToFollow || !me) {
+        if (!userToFollow || !user) {
           throw Error;
         }
 
         if (userToFollow.followers.indexOf(user._id) > -1) {
           await userToFollow.update({ $pull: { followers: user._id } }, { new: true });
-          await me.update({ $pull: { following: userID } }, { new: true });
+          await user.update({ $pull: { following: userID } }, { new: true });
         } else {
           await userToFollow.update({ $push: { followers: user._id } }, { new: true });
-          await me.update({ $push: { following: userID } }, { new: true });
+          await user.update({ $push: { following: userID } }, { new: true });
         }
 
         return await User.findById(userID);
@@ -190,8 +182,6 @@ export default {
     },
     changePassword: async (_, { currentPassword, newPassword }, { user }) => {
       try {
-        await requireUser(user);
-
         if (!user.authUser(currentPassword)) {
           throw new Error(
             JSON.stringify({
@@ -220,7 +210,6 @@ export default {
     },
     changeInfo: async (_, { bio, username, email }, { user }) => {
       try {
-        await requireUser(user);
         const p1 = User.findOne({ email })
           .where('_id')
           .ne(user._id);

@@ -42,11 +42,10 @@ if (userData) {
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
-
   return {
     headers: {
       ...headers,
-      authorization: token || null,
+      Authorization: `Bearer ${token}` || null,
     },
   };
 });

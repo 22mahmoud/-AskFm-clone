@@ -1,10 +1,7 @@
-import { withFilter } from 'graphql-subscriptions';
-
 import FormatErrors from '../../FormatErrors';
 import User from '../../models/User';
 import Question from '../../models/Question';
 import LikeQuestion from '../../models/LikeQuestion';
-import { requireUser } from '../../services/auth';
 import { pubsub } from '../../config/pubsub';
 
 export const QUESTION_LIKED = 'questionLiked';
@@ -38,7 +35,6 @@ export default {
   Query: {
     getQuestions: async (_, args, { user }) => {
       try {
-        await requireUser(user);
         const p1 = Question.find({ answer: { $exists: true } }).sort({ createdAt: -1 });
         const p2 = LikeQuestion.findOne({ userId: user._id });
         const [questions, likes] = await Promise.all([p1, p2]);
@@ -50,7 +46,6 @@ export default {
     },
     getUserAnsweredQuestions: async (_, { username }, { user }) => {
       try {
-        await requireUser(user);
         const currUser = await User.findOne({ username });
         const p1 = Question.find({ answer: { $exists: true }, theResponder: currUser._id }).sort({
           createdAt: -1,
@@ -65,7 +60,6 @@ export default {
     },
     getMyNotAnswerdQuestions: async (_, args, { user }) => {
       try {
-        await requireUser(user);
         const questions = await Question.find()
           .exists('answer', false)
           .where('theResponder', user._id)
@@ -77,7 +71,6 @@ export default {
     },
     getMyNotAnsweredQuestion: async (_, { questionID }, { user }) => {
       try {
-        await requireUser(user);
         const question = await Question.findOne({ _id: questionID, theResponder: user._id }).exists(
           'answer',
           false,
@@ -102,8 +95,6 @@ export default {
   Mutation: {
     sendQuestion: async (_, args, { user }) => {
       try {
-        await requireUser(user);
-
         const question = await Question.create({
           ...args,
           theAsker: user._id,
@@ -125,7 +116,6 @@ export default {
     },
     AnswerQuestion: async (_, { answer, questionID }, { user }) => {
       try {
-        await requireUser(user);
         const question = await Question.findById(questionID);
         const { theResponder, answer: qAnswer } = question;
         if (theResponder.toString() !== user._id.toString()) {
@@ -154,7 +144,6 @@ export default {
     },
     likeQuestionToggle: async (_, { questionID }, { user }) => {
       try {
-        await requireUser(user);
         const likes = await LikeQuestion.findOne({ userId: user._id });
 
         const question = await likes.userLikedQuestion(questionID);
@@ -170,11 +159,12 @@ export default {
     },
     sendQuestionForNearby: async (_, { text }, { user }) => {
       try {
-        const currentUser = await requireUser(user);
-        if (!currentUser) {
+        if (!user) {
           throw Error;
         }
-        const { loc: { coordinates } } = currentUser;
+        const {
+          loc: { coordinates },
+        } = user;
 
         const users = await User.where('loc').nearSphere({
           center: coordinates,
@@ -201,12 +191,12 @@ export default {
       subscribe: () => pubsub.asyncIterator(QUESTION_ANSWERED),
     },
 
-    newQuestionSended: {
-      subscribe: withFilter(
-        () => pubsub.asyncIterator(QUESTION_SENDED),
-        (payload, variables, { user }) =>
-          payload.newQuestionSended.theResponder.toString() === user._id.toString(),
-      ),
-    },
+    // newQuestionSended: {
+    //   subscribe: withFilter(
+    //     () => pubsub.asyncIterator(QUESTION_SENDED),
+    //     (payload, variables, { user }) =>
+    //       payload.newQuestionSended.theResponder.toString() === user._id.toString(),
+    //   ),
+    // },
   },
 };

@@ -1,26 +1,26 @@
 import jwt from 'jsonwebtoken';
-
 import constants from '../config/constants';
 import User from '../models/User';
 
-export const requireUser = async (user) => {
-  if (!user || !user._id) {
-    throw new Error('Unauthorized');
-  }
-
-  const me = await User.findById(user._id);
-
-  if (!me) {
-    throw new Error('Unauthorized!');
-  }
-
-  return me;
-};
-
-export const decodeToken = async (token) => {
+export default async (resolve, _, __, ctx) => {
   try {
-    return await jwt.verify(token, constants.JWT_SECRET);
+    const Authorization = ctx.request.get('Authorization');
+
+    if (!Authorization) {
+      throw new Error('Not authorized!!');
+    }
+
+    const token = Authorization.replace('Bearer ', '');
+    const { id } = jwt.verify(token, constants.JWT_SECRET);
+    const user = await User.findOne(id);
+    if (!user) {
+      throw new Error('Not authorized!!');
+    }
+
+    ctx.user = user;
+
+    return resolve();
   } catch (error) {
-    return false;
+    throw new Error('Not authorized!!');
   }
 };

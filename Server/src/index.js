@@ -1,9 +1,9 @@
 import { fileLoader, mergeTypes, mergeResolvers } from 'merge-graphql-schemas';
 import { GraphQLServer } from 'graphql-yoga';
-
 import path from 'path';
 
 import constants from './config/constants';
+import permissions from './graphql/permissions';
 import './config/db';
 
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './graphql/schema')));
@@ -12,6 +12,8 @@ const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './graphql/reso
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
+  context: req => ({ ...req }),
+  middlewares: [permissions],
 });
 
 const options = {
