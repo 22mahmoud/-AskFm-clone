@@ -8,10 +8,7 @@ export default {
     followers: ({ followers }) => followers.map(f => User.findById(f)),
     following: ({ following }) => following.map(f => User.findById(f)),
   },
-  Me: {
-    followers: ({ followers }) => followers.map(f => User.findById(f)),
-    following: ({ following }) => following.map(f => User.findById(f)),
-  },
+
   Query: {
     getUsers: async () => {
       try {
@@ -146,8 +143,6 @@ export default {
     },
     addLocation: async (_, { loc }, { user }) => {
       try {
-        // console.log(type, coordinates);
-
         const updatedUser = await User.findByIdAndUpdate(
           user._id,
           {

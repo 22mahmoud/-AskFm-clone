@@ -60,7 +60,6 @@ UserSchema.pre('save', function() {
   }
 });
 
-
 UserSchema.methods = {
   _hashPassword(password) {
     return hashSync(password);
